@@ -1,0 +1,20 @@
+#!/bin/sh
+#
+# This file is managed via Puppet
+
+daemon="bundle exec mail_room"
+daemon_flags="-q -c <%= @mail_room_config %>"
+daemon_user="<%= @gitlab_user %>"
+
+. /etc/rc.d/rc.subr
+
+pexp="ruby23 <%= @gitlab_root %>/vendor/bundle/ruby/2.3/bin/mail_room ${daemon_flags:+${daemon_flags}}'
+rc_reload=NO
+
+rc_start() {
+	install -d -o ${daemon_user} /var/run/gitlab
+	${rcexec} "cd <%= @gitlab_root %> && \
+		${daemon} ${daemon_flags} >> <%= @mail_room_log %> 2>&1 &"
+}
+
+rc_cmd $1
