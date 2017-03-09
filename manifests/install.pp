@@ -40,7 +40,6 @@ class gitlab::install (
 
   if ($manage_user) {
     user { $gitlab_user:
-      group      => $gitlab_group,
       home       => $gitlab_home,
       shell      => $gitlab_shell,
       uid        => $gitlab_uid,
@@ -50,7 +49,7 @@ class gitlab::install (
     }
   }
 
-  rc_scripts = [ 'gitlab_unicorn',
+  $rc_scripts = [ 'gitlab_unicorn',
                   'gitlab_mail_room',
                   'gitlab_sidekiq',
                   'gitlab_workhorse',
@@ -59,7 +58,7 @@ class gitlab::install (
     file { "/etc/rc.d/${script}":
       owner   => 'root',
       group   => '0',
-      content => template("${::module_name}/${script}.erb")
+      content => template("gitlab/${script}.erb"),
     }
   }
 
