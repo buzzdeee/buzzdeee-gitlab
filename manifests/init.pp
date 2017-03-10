@@ -43,6 +43,7 @@
 # Copyright 2017 Your name here, unless otherwise noted.
 #
 class gitlab (
+  $gitlab_version,
   $manage_go_package = $::gitlab::params::manage_go_package,
   $manage_yarn_package = $::gitlab::params::manage_yarn_package,
 

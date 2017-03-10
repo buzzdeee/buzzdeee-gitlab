@@ -1,5 +1,6 @@
 # The class that takes care of the installation
 class gitlab::install (
+  $gitlab_version = $::gitlab::gitlab_version,
   $manage_user = $::gitlab::manage_user,
   $gitlab_user = $::gitlab::gitlab_user,
   $gitlab_group = $::gitlab::gitlab_group,
@@ -50,6 +51,14 @@ class gitlab::install (
       groups     => $gitlab_groups,
       managehome => true,
     }
+  }
+
+  vcsrepo { $unicorn_root:
+    ensure   => present,
+    provider => git,
+    source   => 'https://gitlab.com/gitlab-org/gitlab-ce.git',
+    revision => '$gitlab_version',
+    user     => $gitlab_user,
   }
 
   $rc_scripts = [ 'gitlab_unicorn',
