@@ -3,17 +3,17 @@
 # This file is managed via Puppet
 
 daemon="bundle exec unicorn_rails -D"
-daemon_flags="-c <%= @gitlab_root %>/config/unicorn.rb -E production --path <%= @gitlab_root %>"
+daemon_flags="-c <%= @unicorn_root %>/config/unicorn.rb -E production --path <%= @unicorn_root %>"
 daemon_user="<%= @gitlab_user %>"
 
 . /etc/rc.d/rc.subr
 
-pexp="ruby23 <%= @gitlab_root %>/vendor/bundle/ruby/2.3/bin/unicorn_rails ${daemon_flags:+${daemon_flags}}"
+pexp="ruby23 <%= @unicorn_root %>/vendor/bundle/ruby/2.3/bin/unicorn_rails ${daemon_flags:+${daemon_flags}}"
 rc_reload=NO
 
 rc_start() {
 	install -d -o ${daemon_user} /var/run/gitlab
-	${rcexec} "cd <%= @gitlab_root %> && \
+	${rcexec} "cd <%= @unicorn_root %> && \
 		${daemon} ${daemon_flags} &"
 }
 

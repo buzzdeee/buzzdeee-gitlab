@@ -12,7 +12,7 @@ rc_reload=NO
 
 rc_start() {
 	install -d -o ${daemon_user} /var/run/gitlab
-	${rcexec} "cd <%= @gitlab_root %> && \
+	${rcexec} "cd <%= @workhorse_root %> && \
 		/usr/bin/env PATH=<%= @workhorse_root %>:$PATH ${daemon} ${daemon_flags} &"
 }
 
