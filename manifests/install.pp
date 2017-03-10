@@ -39,6 +39,9 @@ class gitlab::install (
 ) {
 
   if ($manage_user) {
+    group { $gitlab_group:
+      gid => $gitlab_gid,
+    }
     user { $gitlab_user:
       home       => $gitlab_home,
       shell      => $gitlab_shell,
