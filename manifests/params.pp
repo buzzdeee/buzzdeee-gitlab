@@ -54,9 +54,10 @@ class gitlab::params {
   $gitlab_pages_pid_path = '/var/run/gitlab/gitlab-pages.pid'
 
   $manage_database = false
-  $dbtype = 'postgres'
+  $dbtype = 'postgresql' # other valid value may be 'mysql'
   $dbname = 'gitlab'
   $dbuser = 'gitlab'
   $dbpass = 'changeme'
   $dbhost = 'localhost'
+  $dbport = '5432'
 }

@@ -100,6 +100,7 @@ class gitlab (
   $dbpass = $::gitlab::params::dbpass,   # you should definately override this one
   $dbname = $::gitlab::params::dbname,
   $dbhost = $::gitlab::params::dbhost,
+  $dbport = $::gitlab::params::dbport,
 ) inherits gitlab::params {
 
   include gitlab::install

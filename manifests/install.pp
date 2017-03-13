@@ -48,6 +48,13 @@ class gitlab::install (
   $gitlab_pages_log = $::gitlab::gitlab_pages_log,
   $gitlab_pages_pid_path = $::gitlab::gitlab_pages_pid_path,
 
+  $dbtype = $::gitlab::dbtype,
+  $dbuser = $::gitlab::dbuser,
+  $dbpass = $::gitlab::dbpass,   # you should definately override this one
+  $dbname = $::gitlab::dbname,
+  $dbhost = $::gitlab::dbhost,
+  $dbport = $::gitlab::dbport,
+
 ) {
 
   if ($manage_user) {
@@ -85,6 +92,42 @@ class gitlab::install (
     mode    => '0644',
     content => template("gitlab/unicorn.rb.erb"),
     require => Vcsrepo[$unicorn_root],
+  }
+  file { "${unicorn_root}/config/database.yml":
+    owner   => 'root',
+    group   => '0',
+    mode    => '0644',
+    content => template("gitlab/database.yml.erb"),
+    require => Vcsrepo[$unicorn_root],
+  }
+
+  if !defined (File[dirname($unicorn_stderr_log)]) {
+    file { dirname($unicorn_stderr_log):
+      ensure => 'directory',
+      owner  => $gitlab_user,
+      group  => $gitlab_group,
+    }
+  }
+  if !defined (File[dirname($unicorn_stdout_log)]) {
+    file { dirname($unicorn_stdout_log):
+      ensure => 'directory',
+      owner  => $gitlab_user,
+      group  => $gitlab_group,
+    }
+  }
+  if !defined (File[dirname($unicorn_socket)]) {
+    file { dirname($unicorn_socket):
+      ensure => 'directory',
+      owner  => $gitlab_user,
+      group  => $gitlab_group,
+    }
+  }
+  if !defined (File[dirname($unicorn_pidfile)]) {
+    file { dirname($unicorn_pidfile):
+      ensure => 'directory',
+      owner  => $gitlab_user,
+      group  => $gitlab_group,
+    }
   }
 
   $rc_scripts = [ 'gitlab_unicorn',

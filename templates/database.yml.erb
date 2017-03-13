@@ -1,0 +1,45 @@
+#
+# PRODUCTION
+#
+production:
+  adapter: <%= @dbtype %>
+  encoding: unicode
+  database: <%= @dbname %>
+  pool: 10
+  username: <%= @dbuser %>
+  password: <%= @dbpass %>
+  host: <%= @dbhost %>
+  port: <%= @dbport %>
+
+#
+# Development specific
+#
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: gitlabhq_development
+  pool: 5
+  username: postgres
+  password:
+
+#
+# Staging specific
+#
+staging:
+  adapter: postgresql
+  encoding: unicode
+  database: gitlabhq_staging
+  pool: 5
+  username: postgres
+  password:
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test: &test
+  adapter: postgresql
+  encoding: unicode
+  database: gitlabhq_test
+  pool: 5
+  username: postgres
+  password:
