@@ -55,6 +55,10 @@ class gitlab::install (
   $dbhost = $::gitlab::dbhost,
   $dbport = $::gitlab::dbport,
 
+  $db_key_base = $::gitlab::db_key_base,
+  $secret_key_base = $::gitlab::secret_key_base,
+  $otp_key_base = $::gitlab::otp_key_base,
+
 ) {
 
   if ($manage_user) {
@@ -98,6 +102,13 @@ class gitlab::install (
     group   => '0',
     mode    => '0644',
     content => template("gitlab/database.yml.erb"),
+    require => Vcsrepo[$unicorn_root],
+  }
+  file { "${unicorn_root}/config/secrets.yml":
+    owner   => 'root',
+    group   => $gitlab_group,
+    mode    => '0640',
+    content => template("gitlab/secrets.yml.erb"),
     require => Vcsrepo[$unicorn_root],
   }
 
