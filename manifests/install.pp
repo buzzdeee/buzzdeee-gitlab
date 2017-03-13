@@ -77,6 +77,14 @@ class gitlab::install (
     group   => '0',
     mode    => '0644',
     content => template("gitlab/gitlab.yml.erb"),
+    require => Vcsrepo[$unicorn_root],
+  }
+  file { "${unicorn_root}/config/unicorn.rb":
+    owner   => 'root',
+    group   => '0',
+    mode    => '0644',
+    content => template("gitlab/unicorn.rb.erb"),
+    require => Vcsrepo[$unicorn_root],
   }
 
   $rc_scripts = [ 'gitlab_unicorn',
