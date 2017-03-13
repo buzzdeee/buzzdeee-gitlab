@@ -47,6 +47,17 @@ class gitlab (
   $manage_go_package = $::gitlab::params::manage_go_package,
   $manage_yarn_package = $::gitlab::params::manage_yarn_package,
 
+  $web_hostname = $::gitlab::params::web_hostname,
+  $ssh_hostname = $::gitlab::params::ssh_hostname,
+  $gitlab_email_from = $::gitlab::params::gitlab_email_from,
+  $gitlab_email_display_name = $::gitlab::params::gitlab_email_display_name,
+  $gitlab_email_reply_to = $::gitlab::params::gitlab_email_reply_to,
+  $gitlab_email_subject_suffix = $::gitlab::params::gitlab_email_subject_suffix,
+
+  $gitlab_satellites_path = $::gitlab::params::gitlab_satellites_path,
+  $gitlab_repositories_path = $::gitlab::params::gitlab_repositories_path,
+  $git_binary = $::gitlab::params::git_binary,
+
   $manage_user = $::gitlab::params::manage_user,
   $gitlab_user = $::gitlab::params::gitlab_user,
   $gitlab_group = $::gitlab::params::gitlab_group,

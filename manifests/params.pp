@@ -3,6 +3,9 @@ class gitlab::params {
   $manage_go_package = false
   $manage_yarn_package = false
 
+  $web_hostname = $::fqdn
+  $ssh_hostname = $::fqdn
+
   # GitLab user configuration
   $manage_user = true
   $gitlab_user = '_gitlab'
@@ -23,6 +26,15 @@ class gitlab::params {
   $unicorn_stdout_log = '/var/log/gitlab/unicorn.stdout.log'
   $unicorn_socket = '/var/run/gitlab/gitlab.socket'
   $unicorn_pidfile = '/var/run/gitlab/unicorn.pid'
+
+  $gitlab_email_from = "${gitlab_user}@${::fqdn}"
+  $gitlab_email_display_name = 'GitLab'
+  $gitlab_email_reply_to = "noreply@${::fqdn}"
+  $gitlab_email_subject_suffix = ''
+
+  $gitlab_satellites_path = '/var/www/gitlab/gitlab-satellites'
+  $gitlab_repositories_path = '/var/www/gitlab/repositories'
+  $git_binary = '/usr/local/bin/git'
 
   $workhorse_log = '/var/log/gitlab/gitlab-workhorse.log'
   $workhorse_socket = '/var/run/gitlab/gitlab-workhorse.socket'

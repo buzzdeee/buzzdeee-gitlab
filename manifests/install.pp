@@ -10,6 +10,17 @@ class gitlab::install (
   $gitlab_gid = $::gitlab::gitlab_gid,
   $gitlab_groups = $::gitlab::gitlab_groups,
 
+  $web_hostname = $::gitlab::web_hostname,
+  $ssh_hostname = $::gitlab::ssh_hostname,
+  $gitlab_email_from = $::gitlab::gitlab_email_from,
+  $gitlab_email_display_name = $::gitlab::gitlab_email_display_name,
+  $gitlab_email_reply_to = $::gitlab::gitlab_email_reply_to,
+  $gitlab_email_subject_suffix = $::gitlab::gitlab_email_subject_suffix,
+
+  $gitlab_satellites_path = $::gitlab::gitlab_satellites_path,
+  $gitlab_repositories_path = $::gitlab::gitlab_repositories_path,
+  $git_binary  =$::gitlab::git_binary,
+
   $unicorn_root = $::gitlab::unicorn_root,
   $workhorse_root = $::gitlab::workhorse_root,
   $gitlabshell_root = $::gitlab::gitlabshell_root,
@@ -57,8 +68,15 @@ class gitlab::install (
     ensure   => present,
     provider => git,
     source   => 'https://gitlab.com/gitlab-org/gitlab-ce.git',
-    revision => '$gitlab_version',
+    revision => $gitlab_version,
     user     => $gitlab_user,
+  }
+
+  file { "${unicorn_root}/config/gitlab.yml":
+    owner   => 'root',
+    group   => '0',
+    mode    => '0644',
+    content => template("gitlab/gitlab.yml.erb"),
   }
 
   $rc_scripts = [ 'gitlab_unicorn',
