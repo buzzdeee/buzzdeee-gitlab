@@ -172,6 +172,7 @@ class gitlab::install (
     user        => $gitlab_user,
     cwd         => $unicorn_root,
     refreshonly => true,
+    timeout     => 2000,
     subscribe   => Vcsrepo[$unicorn_root],
   }
   exec { 'install_gitlab_shell':
@@ -179,7 +180,7 @@ class gitlab::install (
     user        => $gitlab_user,
     cwd         => $unicorn_root,
     refreshonly => true,
-    timeout     => 1000,
+    timeout     => 2000,
     subscribe   => Vcsrepo[$unicorn_root],
     require     => Exec['install_gitlab_gems'],
   }
@@ -188,7 +189,7 @@ class gitlab::install (
     user        => $gitlab_user,
     cwd         => $unicorn_root,
     refreshonly => true,
-    timeout     => 1000,
+    timeout     => 2000,
     subscribe   => Vcsrepo[$unicorn_root],
     require     => Exec['install_gitlab_gems'],
   }
