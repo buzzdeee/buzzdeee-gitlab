@@ -107,5 +107,8 @@ class gitlab (
 ) inherits gitlab::params {
 
   include gitlab::install
+  include gitlab::gitconfig
 
+  Class['gitlab::install'] ~>
+  Class['gitlab::gitconfig']
 }

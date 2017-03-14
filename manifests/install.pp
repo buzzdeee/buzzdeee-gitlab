@@ -115,7 +115,7 @@ class gitlab::install (
     owner   => 'root',
     group   => $gitlab_group,
     mode    => '0640',
-    content => template("gitlab/rack_attack.rb.erb")
+    content => template("gitlab/rack_attack.rb.erb"),
     require => Vcsrepo[$unicorn_root],
   }
 
@@ -143,14 +143,14 @@ class gitlab::install (
       require => Vcsrepo[$unicorn_root],
     }
   }
-  file { "${gitlab_root}/public/uploads":
+  file { "${unicorn_root}/public/uploads":
     ensure => 'directory',
     owner  => $gitlab_user,
     group  => $gitlab_group,
     mode   => '0700',
     require => Vcsrepo[$unicorn_root],
   }
-  file { [ "${gitlab_root}/builds", "${gitlab_root}/shared/artifacts", "${gitlab_root}/shared/pages":
+  file { [ "${unicorn_root}/builds", "${unicorn_root}/shared/artifacts", "${unicorn_root}/shared/pages" ]:
     ensure => 'directory',
     owner  => $gitlab_user,
     group  => $gitlab_group,
