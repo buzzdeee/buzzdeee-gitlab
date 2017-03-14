@@ -167,14 +167,30 @@ class gitlab::install (
     require => Vcsrepo[$unicorn_root],
   }
 
-
-
   exec { 'install_gitlab_gems':
     command     => "bundle${ruby_suffix} install --deployment --without development test mysql aws kerberos",
     user        => $gitlab_user,
     cwd         => $unicorn_root,
     refreshonly => true,
     subscribe   => Vcsrepo[$unicorn_root],
+  }
+  exec { 'install_gitlab_shell':
+    command     => "bundle${ruby_suffix} exec rake${ruby_suffix} gitlab:shell:install REDIS_URL=unix:${redis_socket} RAILS_ENV=production SKIP_STORAGE_VALIDATION=true",
+    user        => $gitlab_user,
+    cwd         => $unicorn_root,
+    refreshonly => true,
+    timeout     => 1000,
+    subscribe   => Vcsrepo[$unicorn_root],
+    require     => Exec['install_gitlab_gems'],
+  }
+  exec { 'install_gitlab_workhorse':
+    command     => "bundle${ruby_suffix} exec rake${ruby_suffix} 'gitlab:workhorse:install[${workhorse_root}]' RAILS_ENV=production",
+    user        => $gitlab_user,
+    cwd         => $unicorn_root,
+    refreshonly => true,
+    timeout     => 1000,
+    subscribe   => Vcsrepo[$unicorn_root],
+    require     => Exec['install_gitlab_gems'],
   }
 
   if !defined (File[dirname($unicorn_pidfile)]) {
