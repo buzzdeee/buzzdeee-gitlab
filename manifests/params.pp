@@ -3,6 +3,8 @@ class gitlab::params {
   $manage_go_package = false
   $manage_yarn_package = false
 
+  $ruby_suffix='23'
+
   $web_hostname = $::fqdn
   $ssh_hostname = $::fqdn
 

@@ -1,6 +1,7 @@
 # The class that takes care of the installation
 class gitlab::install (
   $gitlab_version = $::gitlab::gitlab_version,
+  $ruby_suffix = $::gitlab::ruby_suffix,
   $manage_user = $::gitlab::manage_user,
   $gitlab_user = $::gitlab::gitlab_user,
   $gitlab_group = $::gitlab::gitlab_group,
@@ -165,6 +166,17 @@ class gitlab::install (
     group  => $gitlab_group,
     require => Vcsrepo[$unicorn_root],
   }
+
+
+
+  exec { 'install_gitlab_gems':
+    command     => "bundle${ruby_suffix} install --deployment --without development test mysql aws kerberos",
+    user        => $gitlab_user,
+    cwd         => $unicorn_root,
+    refreshonly => true,
+    subscribe   => Vcsrepo[$unicorn_root],
+  }
+
   if !defined (File[dirname($unicorn_pidfile)]) {
     file { dirname($unicorn_pidfile):
       ensure => 'directory',

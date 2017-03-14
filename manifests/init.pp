@@ -47,6 +47,7 @@ class gitlab (
   $db_key_base = 'changeme',
   $secret_key_base = 'changeme',
   $otp_key_base = 'changeme',
+  $ruby_suffix = $::gitlab::params::ruby_suffix,
   $manage_go_package = $::gitlab::params::manage_go_package,
   $manage_yarn_package = $::gitlab::params::manage_yarn_package,
 
