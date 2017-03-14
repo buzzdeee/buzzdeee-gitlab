@@ -104,6 +104,7 @@ class gitlab (
   $dbname = $::gitlab::params::dbname,
   $dbhost = $::gitlab::params::dbhost,
   $dbport = $::gitlab::params::dbport,
+  $redis_socket = $::gitlab::params::redis_socket,
 ) inherits gitlab::params {
 
   include gitlab::install

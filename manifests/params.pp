@@ -60,4 +60,6 @@ class gitlab::params {
   $dbpass = 'changeme'
   $dbhost = 'localhost'
   $dbport = '5432'
+
+  $redis_socket = 'unix:/var/run/redis/redis_gitlab.sock'
 }

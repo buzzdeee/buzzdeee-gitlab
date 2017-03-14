@@ -55,6 +55,8 @@ class gitlab::install (
   $dbhost = $::gitlab::dbhost,
   $dbport = $::gitlab::dbport,
 
+  $redis_socket = $::gitlab::redis_socket,
+
   $db_key_base = $::gitlab::db_key_base,
   $secret_key_base = $::gitlab::secret_key_base,
   $otp_key_base = $::gitlab::otp_key_base,
@@ -102,6 +104,13 @@ class gitlab::install (
     group   => '0',
     mode    => '0644',
     content => template("gitlab/database.yml.erb"),
+    require => Vcsrepo[$unicorn_root],
+  }
+  file { "${unicorn_root}/config/resque.yml":
+    owner   => 'root',
+    group   => '0',
+    mode    => '0644',
+    content => template("gitlab/resque.yml.erb"),
     require => Vcsrepo[$unicorn_root],
   }
   file { "${unicorn_root}/config/secrets.yml":
