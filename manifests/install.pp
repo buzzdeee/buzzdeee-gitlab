@@ -111,12 +111,20 @@ class gitlab::install (
     content => template("gitlab/secrets.yml.erb"),
     require => Vcsrepo[$unicorn_root],
   }
+  file { "${unicorn_root}/config/initializers/rack_attack.rb":
+    owner   => 'root',
+    group   => $gitlab_group,
+    mode    => '0640',
+    content => template("gitlab/rack_attack.rb.erb")
+    require => Vcsrepo[$unicorn_root],
+  }
 
   if !defined (File[dirname($unicorn_stderr_log)]) {
     file { dirname($unicorn_stderr_log):
       ensure => 'directory',
       owner  => $gitlab_user,
       group  => $gitlab_group,
+      require => Vcsrepo[$unicorn_root],
     }
   }
   if !defined (File[dirname($unicorn_stdout_log)]) {
@@ -124,6 +132,7 @@ class gitlab::install (
       ensure => 'directory',
       owner  => $gitlab_user,
       group  => $gitlab_group,
+      require => Vcsrepo[$unicorn_root],
     }
   }
   if !defined (File[dirname($unicorn_socket)]) {
@@ -131,13 +140,28 @@ class gitlab::install (
       ensure => 'directory',
       owner  => $gitlab_user,
       group  => $gitlab_group,
+      require => Vcsrepo[$unicorn_root],
     }
+  }
+  file { "${gitlab_root}/public/uploads":
+    ensure => 'directory',
+    owner  => $gitlab_user,
+    group  => $gitlab_group,
+    mode   => '0700',
+    require => Vcsrepo[$unicorn_root],
+  }
+  file { [ "${gitlab_root}/builds", "${gitlab_root}/shared/artifacts", "${gitlab_root}/shared/pages":
+    ensure => 'directory',
+    owner  => $gitlab_user,
+    group  => $gitlab_group,
+    require => Vcsrepo[$unicorn_root],
   }
   if !defined (File[dirname($unicorn_pidfile)]) {
     file { dirname($unicorn_pidfile):
       ensure => 'directory',
       owner  => $gitlab_user,
       group  => $gitlab_group,
+      require => Vcsrepo[$unicorn_root],
     }
   }
 
@@ -151,6 +175,7 @@ class gitlab::install (
       owner   => 'root',
       group   => '0',
       content => template("gitlab/${script}.erb"),
+      require => Vcsrepo[$unicorn_root],
     }
   }
 
