@@ -167,6 +167,15 @@ class gitlab::install (
     require => Vcsrepo[$unicorn_root],
   }
 
+  exec { 'configure_building_nokogiri':
+    command     => "bundle${ruby_suffix} config build.nokogiri --use-system-libraries",
+    user        => $gitlab_user,
+    cwd         => $unicorn_root,
+    refreshonly => true,
+    timeout     => 2000,
+    subscribe   => Vcsrepo[$unicorn_root],
+    before      => Exec['install_gitlab_gems'],
+  }
   exec { 'install_gitlab_gems':
     command     => "bundle${ruby_suffix} install --deployment --without development test mysql aws kerberos",
     user        => $gitlab_user,
