@@ -169,6 +169,7 @@ class gitlab::install (
 
   exec { 'configure_building_nokogiri':
     command     => "bundle${ruby_suffix} config build.nokogiri --use-system-libraries",
+    environment => "HOME=$gitlab_home",
     user        => $gitlab_user,
     cwd         => $unicorn_root,
     refreshonly => true,
@@ -178,6 +179,7 @@ class gitlab::install (
   }
   exec { 'install_gitlab_gems':
     command     => "bundle${ruby_suffix} install --deployment --without development test mysql aws kerberos",
+    environment => "HOME=$gitlab_home",
     user        => $gitlab_user,
     cwd         => $unicorn_root,
     refreshonly => true,
@@ -186,6 +188,7 @@ class gitlab::install (
   }
   exec { 'install_gitlab_shell':
     command     => "bundle${ruby_suffix} exec rake${ruby_suffix} gitlab:shell:install REDIS_URL=unix:${redis_socket} RAILS_ENV=production SKIP_STORAGE_VALIDATION=true",
+    environment => "HOME=$gitlab_home",
     user        => $gitlab_user,
     cwd         => $unicorn_root,
     refreshonly => true,
@@ -195,6 +198,7 @@ class gitlab::install (
   }
   exec { 'install_gitlab_workhorse':
     command     => "bundle${ruby_suffix} exec rake${ruby_suffix} 'gitlab:workhorse:install[${workhorse_root}]' RAILS_ENV=production",
+    environment => "HOME=$gitlab_home",
     user        => $gitlab_user,
     cwd         => $unicorn_root,
     refreshonly => true,
