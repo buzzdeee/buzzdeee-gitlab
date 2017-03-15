@@ -168,7 +168,7 @@ class gitlab::install (
   }
 
   exec { 'configure_building_nokogiri':
-    command     => "bundle${ruby_suffix} config build.nokogiri --use-system-libraries",
+    command     => "bundle${ruby_suffix} config build.nokogiri --use-system-libraries --with-xml2-config=/usr/local/bin/xml2-config --with-xslt-config=/usr/local/bin/xslt-config",
     environment => "HOME=$gitlab_home",
     user        => $gitlab_user,
     cwd         => $unicorn_root,
