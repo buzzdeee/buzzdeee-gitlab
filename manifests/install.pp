@@ -169,9 +169,8 @@ class gitlab::install (
 
   exec { 'configure_building_nokogiri':
     command     => "bundle${ruby_suffix} config build.nokogiri --use-system-libraries --with-xml2-config=/usr/local/bin/xml2-config --with-xslt-config=/usr/local/bin/xslt-config",
-    environment => "HOME=$gitlab_home",
-    user        => $gitlab_user,
-    cwd         => $unicorn_root,
+    environment => [ "HOME=$gitlab_home",
+                     "CFLAGS=-I/usr/local/include/libxml2" ],
     refreshonly => true,
     timeout     => 2000,
     subscribe   => Vcsrepo[$unicorn_root],
@@ -179,7 +178,8 @@ class gitlab::install (
   }
   exec { 'install_gitlab_gems':
     command     => "bundle${ruby_suffix} install --deployment --without development test mysql aws kerberos",
-    environment => "HOME=$gitlab_home",
+    environment => [ "HOME=$gitlab_home",
+                     "CFLAGS=-I/usr/local/include/libxml2" ],
     user        => $gitlab_user,
     cwd         => $unicorn_root,
     refreshonly => true,
