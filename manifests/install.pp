@@ -220,7 +220,9 @@ class gitlab::install (
   }
   exec { 'install_gitlab_workhorse':
     command     => "bundle${ruby_suffix} exec rake${ruby_suffix} 'gitlab:workhorse:install[${workhorse_root}]' RAILS_ENV=production",
-    environment => "HOME=$gitlab_home",
+    environment => [ "HOME=$gitlab_home",
+                     "CFLAGS=-I/usr/local/include/libxml2",
+                     "PATH=${gitlab_home}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11R6/bin:/usr/local/sbin" ],
     user        => $gitlab_user,
     cwd         => $unicorn_root,
     refreshonly => true,
