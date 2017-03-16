@@ -170,7 +170,7 @@ class gitlab::install (
   exec { 'configure_building_nokogiri':
     command     => "bundle${ruby_suffix} config build.nokogiri --use-system-libraries --with-xml2-config=/usr/local/bin/xml2-config --with-xslt-config=/usr/local/bin/xslt-config",
     environment => [ "HOME=$gitlab_home",
-                     "CFLAGS=-I/usr/local/include/libxml2" ],
+                     "CFLAGS='-I/usr/local/include/libxml2 -I/usr/local/include/ruby-2.3" ],
     refreshonly => true,
     timeout     => 2000,
     subscribe   => Vcsrepo[$unicorn_root],
