@@ -182,15 +182,22 @@ class gitlab::install (
     group   => $gitlab_group,
     require => Exec['configure_building_nokogiri'],
   }
+  file { '/usr/local/bin/make':
+    ensure  => 'link',
+    target  => '/usr/local/bin/gmake',
+    require => File["${gitlab_home}/.bundle/cache"],
+  }
   exec { 'install_gitlab_gems':
     command     => "bundle${ruby_suffix} install --deployment --without development test mysql aws kerberos",
     environment => [ "HOME=$gitlab_home",
-                     "CFLAGS=-I/usr/local/include/libxml2" ],
+                     "CFLAGS=-I/usr/local/include/libxml2",
+                     'PATH=/usr/local/bin:${PATH}' ],
     user        => $gitlab_user,
     cwd         => $unicorn_root,
     refreshonly => true,
     timeout     => 2000,
     subscribe   => Vcsrepo[$unicorn_root],
+    require     => File['/usr/local/bin/make'],
   }
   exec { 'install_gitlab_shell':
     command     => "bundle${ruby_suffix} exec rake${ruby_suffix} gitlab:shell:install REDIS_URL=unix:${redis_socket} RAILS_ENV=production SKIP_STORAGE_VALIDATION=true",
