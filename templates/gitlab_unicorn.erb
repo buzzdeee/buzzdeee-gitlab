@@ -2,7 +2,7 @@
 #
 # This file is managed via Puppet
 
-daemon="bundle exec unicorn_rails -D"
+daemon="bundle<%= @ruby_suffix %> exec unicorn_rails<%= @ruby_suffix %> -D"
 daemon_flags="-c <%= @unicorn_root %>/config/unicorn.rb -E production --path <%= @unicorn_root %>"
 daemon_user="<%= @gitlab_user %>"
 
