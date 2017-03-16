@@ -176,6 +176,12 @@ class gitlab::install (
     subscribe   => Vcsrepo[$unicorn_root],
     before      => Exec['install_gitlab_gems'],
   }
+  file { "${gitlab_home}/.bundle/cache":
+    ensure  => 'directory',
+    owner   => $gitlab_user,
+    group   => $gitlab_group,
+    require => Exec['configure_building_nokogiri'],
+  }
   exec { 'install_gitlab_gems':
     command     => "bundle${ruby_suffix} install --deployment --without development test mysql aws kerberos",
     environment => [ "HOME=$gitlab_home",
