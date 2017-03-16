@@ -8,6 +8,7 @@ daemon_user="<%= @gitlab_user %>"
 
 . /etc/rc.d/rc.subr
 
+pexp="${daemon} ${daemon_flags:+${daemon_flags}}"
 rc_reload=NO
 
 rc_start() {
