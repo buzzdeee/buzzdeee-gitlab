@@ -182,24 +182,31 @@ class gitlab::install (
     group   => $gitlab_group,
     require => Exec['configure_building_nokogiri'],
   }
-  file { '/usr/local/bin/make':
+  file { "${gitlab_home}/bin":
+    ensure  => 'directory',
+    require => Exec['configure_building_nokogiri'],
+  }
+  file { "${gitlab_home}/bin/tar":
+    ensure  => 'link',
+    target  => '/usr/local/bin/gtar',
+    require => File["${gitlab_home}/bin"],
+  }
+  file { "${gitlab_home}/bin/make":
     ensure  => 'link',
     target  => '/usr/local/bin/gmake',
-    require => File["${gitlab_home}/.bundle/cache"],
+    require => File["${gitlab_home}/bin"],
   }
   exec { 'install_gitlab_gems':
     command     => "bundle${ruby_suffix} install --deployment --without development test mysql aws kerberos",
     environment => [ "HOME=$gitlab_home",
                      "CFLAGS=-I/usr/local/include/libxml2",
-                     "CC=clang",
-                     "CXX=clang++",
-                     'PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11R6/bin:/usr/local/sbin' ],
+                     "PATH=${gitlab_home}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11R6/bin:/usr/local/sbin" ],
     user        => $gitlab_user,
     cwd         => $unicorn_root,
     refreshonly => true,
     timeout     => 2000,
     subscribe   => Vcsrepo[$unicorn_root],
-    require     => File['/usr/local/bin/make'],
+    require     => File["${gitlab_home}/bin/make"],
   }
   exec { 'install_gitlab_shell':
     command     => "bundle${ruby_suffix} exec rake${ruby_suffix} gitlab:shell:install REDIS_URL=unix:${redis_socket} RAILS_ENV=production SKIP_STORAGE_VALIDATION=true",
