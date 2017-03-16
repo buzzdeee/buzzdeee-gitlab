@@ -191,7 +191,7 @@ class gitlab::install (
     command     => "bundle${ruby_suffix} install --deployment --without development test mysql aws kerberos",
     environment => [ "HOME=$gitlab_home",
                      "CFLAGS=-I/usr/local/include/libxml2",
-                     'PATH=/usr/local/bin:${PATH}' ],
+                     'PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11R6/bin:/usr/local/sbin' ],
     user        => $gitlab_user,
     cwd         => $unicorn_root,
     refreshonly => true,
