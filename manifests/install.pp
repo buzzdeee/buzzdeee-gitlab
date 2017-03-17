@@ -258,6 +258,30 @@ class gitlab::install (
     subscribe   => Vcsrepo[$unicorn_root],
     require     => Exec['install_gitlab_gems'],
   }
+  exec { 'npm_install_production':
+    command     => "npm install --production",
+    environment => [ "HOME=$gitlab_home",
+                     "CFLAGS=-I/usr/local/include/libxml2",
+                     "PATH=${gitlab_home}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11R6/bin:/usr/local/sbin" ],
+    user        => $gitlab_user,
+    cwd         => $unicorn_root,
+    refreshonly => true,
+    timeout     => 2000,
+    subscribe   => Vcsrepo[$unicorn_root],
+    require     => Exec['install_gitlab_gems'],
+  }
+  exec { 'gitlab_assets_compile':
+    command     => "bundle${ruby_suffix} exec rake${ruby_suffix} gitlab:assets:compile RAILS_ENV=production NODE_ENV=production",
+    environment => [ "HOME=$gitlab_home",
+                     "CFLAGS=-I/usr/local/include/libxml2",
+                     "PATH=${gitlab_home}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11R6/bin:/usr/local/sbin" ],
+    user        => $gitlab_user,
+    cwd         => $unicorn_root,
+    refreshonly => true,
+    timeout     => 2000,
+    subscribe   => Exec['npm_install_production'],
+    require     => Exec['install_gitlab_gems'],
+  }
 
   if !defined (File[dirname($unicorn_pidfile)]) {
     file { dirname($unicorn_pidfile):
