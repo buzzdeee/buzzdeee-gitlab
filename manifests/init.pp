@@ -74,6 +74,7 @@ class gitlab (
   $unicorn_root = $::gitlab::params::unicorn_root,
   $workhorse_root = $::gitlab::params::workhorse_root,
   $gitlabshell_root = $::gitlab::params::gitlabshell_root,
+  $web_chroot = $::gitlab::params::web_chroot,
 
   $unicorn_port = $::gitlab::params::unicorn_port,
   $unicorn_relative_web_path = $::gitlab::params::unicorn_relative_web_path,

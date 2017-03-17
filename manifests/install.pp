@@ -25,6 +25,7 @@ class gitlab::install (
   $unicorn_root = $::gitlab::unicorn_root,
   $workhorse_root = $::gitlab::workhorse_root,
   $gitlabshell_root = $::gitlab::gitlabshell_root,
+  $web_chroot = $::gitlab::web_chroot,
   
   $unicorn_port = $::gitlab::unicorn_port,
   $unicorn_relative_web_path = $::gitlab::unicorn_relative_web_path,
@@ -151,6 +152,21 @@ class gitlab::install (
   }
   if !defined (File[dirname($unicorn_socket)]) {
     file { dirname($unicorn_socket):
+      ensure => 'directory',
+      owner  => $gitlab_user,
+      group  => $gitlab_group,
+      require => Vcsrepo[$unicorn_root],
+    }
+  }
+  $workhorse_socket_dir = dirname("${web_chroot}${workhorse_socket}")
+  if !defined (File[$workhorse_socket_dir]) {
+    if !defined (File[dirname($workhorse_socket_dir)]) {
+      file { dirname($workhorse_socket_dir):
+        ensure => 'directory',
+        require => Vcsrepo[$unicorn_root],
+      }
+    }
+    file { $workhorse_socket_dir:
       ensure => 'directory',
       owner  => $gitlab_user,
       group  => $gitlab_group,

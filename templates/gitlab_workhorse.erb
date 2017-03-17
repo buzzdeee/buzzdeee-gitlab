@@ -3,7 +3,7 @@
 # This file is managed via Puppet
 
 daemon="gitlab-workhorse"
-daemon_flags="-listenUmask 0 -listenNetwork unix -listenAddr <%= @workhorse_socket %> -authBackend http://127.0.0.1:<%= @gitlab_port %><%= @gitlab_relative_web_path %> -authSocket <%= @gitlab_socket %> -documentRoot <%= @workhorse_document_root %>"
+daemon_flags="-listenUmask 0 -listenNetwork unix -listenAddr <%= @web_chroot %><%= @workhorse_socket %> -authBackend http://127.0.0.1:<%= @gitlab_port %><%= @gitlab_relative_web_path %> -authSocket <%= @gitlab_socket %> -documentRoot <%= @workhorse_document_root %>"
 daemon_user="<%= @gitlab_user %>"
 
 . /etc/rc.d/rc.subr

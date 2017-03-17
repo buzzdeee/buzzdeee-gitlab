@@ -21,6 +21,7 @@ class gitlab::params {
   $unicorn_root = '/var/www/gitlab/gitlab'
   $workhorse_root = '/var/www/gitlab/gitlab-workhorse'
   $gitlabshell_root = '/var/www/gitlab/gitlab-shell'
+  $web_chroot = '/var/www'
 
   $unicorn_port = '8080'
   $unicorn_relative_web_path = '/gitlab'
