@@ -38,6 +38,10 @@ class gitlab::params {
   $gitlab_repositories_path = '/var/www/gitlab/repositories'
   $git_binary = '/usr/local/bin/git'
 
+  $gitlab_shell_audit_usernames = 'true'
+  $gitlab_shell_self_signed_cert = 'false'
+  $gitlab_shell_log_level = 'INFO'
+
   $workhorse_log = '/var/log/gitlab/gitlab-workhorse.log'
   $workhorse_socket = '/var/run/gitlab/gitlab-workhorse.socket'
   $workhorse_document_root = '/var/www/gitlab/gitlab/public'

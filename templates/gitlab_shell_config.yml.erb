@@ -1,0 +1,12 @@
+---
+user: <%= @gitlab_user %>
+gitlab_url: https://<%= @web_hostname %><%= @unicorn_relative_web_path %>
+http_settings:
+  self_signed_cert: <%= @gitlab_shell_self_signed_cert %>
+auth_file: "<%= @gitlab_home %>/.ssh/authorized_keys"
+redis:
+  bin: "/usr/local/bin/redis-cli"
+  namespace: resque:gitlab
+  socket: "<%= @redis_socket %>"
+log_level: <%= @gitlab_shell_log_level %>
+audit_usernames: <%= @gitlab_shell_audit_usernames %>

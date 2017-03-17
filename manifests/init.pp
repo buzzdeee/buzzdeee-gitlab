@@ -90,6 +90,10 @@ class gitlab (
   $sidekiq_pid = $::gitlab::params::sidekiq_pid,
   $sidekiq_config = $::gitlab::params::sidekiq_config,
 
+  $gitlab_shell_audit_username = $::gitlab::params::gitlab_shell_audit_username,
+  $gitlab_shell_self_signed_cert = $::gitlab::params::gitlab_shell_self_signed_cert,
+  $gitlab_shell_log_level = $::gitlab::params::gitlab_shell_log_level,
+
   $mail_room_enabled = $::gitlab::params::mail_room_enabled,
   $mail_room_pid_path = $::gitlab::params::mail_room_pid_path,
   $mail_room_config = $::gitlab::params::mail_room_config,
