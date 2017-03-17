@@ -249,6 +249,7 @@ class gitlab::install (
     file { "/etc/rc.d/${script}":
       owner   => 'root',
       group   => '0',
+      mode    => '0755',
       content => template("gitlab/${script}.erb"),
       require => Vcsrepo[$unicorn_root],
     }
