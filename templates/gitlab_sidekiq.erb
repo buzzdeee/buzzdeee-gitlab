@@ -2,13 +2,13 @@
 #
 # This file is managed via Puppet
 
-daemon="bundle exec sidekiq"
+daemon="bundle<%= @ruby_suffix %> exec sidekiq"
 daemon_flags="-C <%= @sidekiq_config %> -e production"
 daemon_user="<%= @gitlab_user %>"
 
 . /etc/rc.d/rc.subr
 
-pexp="ruby23 <%= @unicorn_root %>/vendor/bundle/ruby/2.3/bin/sidekiq ${daemon_flags:+${daemon_flags}}'
+pexp="ruby23 <%= @unicorn_root %>/vendor/bundle/ruby/2.3/bin/sidekiq ${daemon_flags:+${daemon_flags}}"
 rc_reload=NO
 
 rc_start() {
