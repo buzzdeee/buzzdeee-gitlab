@@ -270,6 +270,10 @@ class gitlab::install (
     subscribe   => Vcsrepo[$unicorn_root],
     require     => Exec['install_gitlab_gems'],
   }
+  file { "${unicorn_root}/node_modules/webpack/bin/webpack.js":
+    mode    => '0755',
+    require => Exec['npm_install_production'],
+  }
   exec { 'gitlab_assets_compile':
     command     => "bundle${ruby_suffix} exec rake${ruby_suffix} gitlab:assets:compile RAILS_ENV=production NODE_ENV=production",
     environment => [ "HOME=$gitlab_home",
@@ -280,7 +284,7 @@ class gitlab::install (
     refreshonly => true,
     timeout     => 2000,
     subscribe   => Exec['npm_install_production'],
-    require     => Exec['install_gitlab_gems'],
+    require     => File["${unicorn_root}/node_modules/webpack/bin/webpack.js"],
   }
 
   if !defined (File[dirname($unicorn_pidfile)]) {
