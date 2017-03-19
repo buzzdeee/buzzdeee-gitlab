@@ -82,6 +82,7 @@ class gitlab (
   $unicorn_stdout_log = $::gitlab::params::unicorn_stdout_log,
   $unicorn_socket = $::gitlab::params::unicorn_socket,
   $unicorn_pidfile = $::gitlab::params::unicorn_pidfile,
+  $unicorn_timeout = $::gitlab::params::unicorn_timeout,
 
   $workhorse_log = $::gitlab::params::workhorse_log,
   $workhorse_socket = $::gitlab::params::workhorse_socket,

@@ -29,6 +29,7 @@ class gitlab::params {
   $unicorn_stdout_log = '/var/log/gitlab/unicorn.stdout.log'
   $unicorn_socket = '/var/run/gitlab/gitlab.socket'
   $unicorn_pidfile = '/var/run/gitlab/unicorn.pid'
+  $unicorn_timeout = '60'
 
   $gitlab_email_from = "${gitlab_user}@${::fqdn}"
   $gitlab_email_display_name = 'GitLab'

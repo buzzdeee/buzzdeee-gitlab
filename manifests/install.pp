@@ -33,6 +33,7 @@ class gitlab::install (
   $unicorn_stdout_log = $::gitlab::unicorn_stdout_log,
   $unicorn_socket = $::gitlab::unicorn_socket,
   $unicorn_pidfile = $::gitlab::unicorn_pidfile,
+  $unicorn_timeout = $::gitlab::unicorn_timeout,
 
   $workhorse_log = $::gitlab::workhorse_log,
   $workhorse_socket = $::gitlab::workhorse_socket,
