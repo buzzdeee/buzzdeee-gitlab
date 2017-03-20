@@ -232,6 +232,11 @@ class gitlab::install (
     target  => '/usr/local/bin/gmake',
     require => File["${gitlab_home}/bin"],
   }
+  file { "${gitlab_home}/bin/bundle":
+    ensure  => 'link',
+    target  => "/usr/local/bin/bundle${ruby_suffix}",
+    require => File["${gitlab_home}/bin"],
+  }
   exec { 'install_gitlab_gems':
     command     => "bundle${ruby_suffix} install --deployment --without development test mysql aws kerberos",
     environment => [ "HOME=$gitlab_home",
