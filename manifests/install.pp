@@ -54,7 +54,7 @@ class gitlab::install (
   $workhorse_socket = $::gitlab::workhorse_socket,
   $workhorse_document_root = $::gitlab::workhorse_document_root,
 
-  $gitlab_shell_audit_username = $::gitlab::gitlab_shell_audit_username,
+  $gitlab_shell_audit_usernames = $::gitlab::gitlab_shell_audit_usernames,
   $gitlab_shell_self_signed_cert = $::gitlab::gitlab_shell_self_signed_cert,
   $gitlab_shell_log_level = $::gitlab::gitlab_shell_log_level,
 
