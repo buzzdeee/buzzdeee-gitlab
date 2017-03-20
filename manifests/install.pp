@@ -121,6 +121,13 @@ class gitlab::install (
     content => template("gitlab/unicorn.rb.erb"),
     require => Vcsrepo[$unicorn_root],
   }
+  file { "${unicorn_root}/config/initializers/relative_url.rb":
+    owner   => 'root',
+    group   => '0',
+    mode    => '0644',
+    content => template("gitlab/relative_url.rb.erb"),
+    require => Vcsrepo[$unicorn_root],
+  }
   file { "${unicorn_root}/config/database.yml":
     owner   => 'root',
     group   => '0',
