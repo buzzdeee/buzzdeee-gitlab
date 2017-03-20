@@ -254,24 +254,24 @@ production: &base
         # for instance if you find out it is too large to fit on the web page.
         #
         # Example: 'Paris' or 'Acme, Ltd.'
-        label: 'LDAP'
+        label: '<%= @auth_ldap_label %>'
 
-        host: '_your_ldap_server'
-        port: 389
-        uid: 'sAMAccountName'
-        method: 'plain' # "tls" or "ssl" or "plain"
-        bind_dn: '_the_full_dn_of_the_user_you_will_bind_with'
-        password: '_the_password_of_the_bind_user'
+        host: '<%= @auth_ldap_server %>'
+        port: <%= @auth_ldap_port %>
+        uid: '<%= @auth_ldap_uid %>'
+        method: '<%= @auth_ldap_method %>' # "tls" or "ssl" or "plain"
+        bind_dn: '<%= @auth_ldap_bind_dn %>'
+        password: '<%= @auth_ldap_bind_pw %>'
 
         # Set a timeout, in seconds, for LDAP queries. This helps avoid blocking
         # a request if the LDAP server becomes unresponsive.
         # A value of 0 means there is no timeout.
-        timeout: 10
+	timeout: <%= @auth_ldap_timeout %>
 
         # This setting specifies if LDAP server is Active Directory LDAP server.
         # For non AD servers it skips the AD specific queries.
         # If your LDAP server is not AD, set this to false.
-        active_directory: <%= @gitlab_ldap_
+        active_directory: <%= @gitlab_ldap_is_ad %>
 
         # If allow_username_or_email_login is enabled, GitLab will ignore everything
         # after the first '@' in the LDAP username submitted by the user on login.
@@ -282,18 +282,18 @@ production: &base
         #
         # If you are using "uid: 'userPrincipalName'" on ActiveDirectory you need to
         # disable this setting, because the userPrincipalName contains an '@'.
-        allow_username_or_email_login: false
+        allow_username_or_email_login: <%= @auth_ldap_allow_username_or_email_login %>
 
         # To maintain tight control over the number of active users on your GitLab installation,
         # enable this setting to keep new users blocked until they have been cleared by the admin
         # (default: false).
-        block_auto_created_users: false
+        block_auto_created_users: <%= @auth_ldap_block_auto_created_users %>
 
         # Base where we can search for users
         #
         #   Ex. ou=People,dc=gitlab,dc=example
         #
-        base: ''
+        base: '<%= @auth_ldap_search_base %>'
 
         # Filter LDAP users
         #
@@ -302,7 +302,7 @@ production: &base
         #
         #   Note: GitLab does not support omniauth-ldap's custom filter syntax.
         #
-        user_filter: ''
+        user_filter: '<%= @auth_ldap_user_filter %>'
 
         # LDAP attributes that GitLab will use to create an account for the LDAP user.
         # The specified attribute can either be the attribute name as a string (e.g. 'mail'),
