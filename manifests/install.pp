@@ -91,7 +91,7 @@ class gitlab::install (
     }
     user { $gitlab_user:
       home       => $gitlab_home,
-      shell      => $gitlab_shell,
+      shell      => $gitlab_usershell,
       uid        => $gitlab_uid,
       gid        => $gitlab_gid,
       groups     => $gitlab_groups,
