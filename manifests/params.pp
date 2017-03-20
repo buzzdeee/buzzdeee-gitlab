@@ -31,6 +31,21 @@ class gitlab::params {
   $unicorn_pidfile = '/var/run/gitlab/unicorn.pid'
   $unicorn_timeout = '60'
 
+  $auth_ldap_enabled = 'false'
+  $auth_ldap_label = 'LDAP'
+  $auth_ldap_server = 'auth_ldap_server'
+  $auth_ldap_port = '389'
+  $auth_ldap_method = 'plain'	# may also be 'tls' or 'ssl'
+  $auth_ldap_uid = 'uid'
+  $auth_ldap_bind_dn = ''
+  $auth_ldap_bind_pw = ''
+  $auth_ldap_timeout = '10'
+  $auth_ldap_is_ad = 'false'
+  $auth_ldap_allow_username_or_email_login = 'false'
+  $auth_ldap_block_auto_created_users = 'false'
+  $auth_ldap_search_base = ''
+  $auth_ldap_user_filter = ''
+
   $gitlab_email_from = "${gitlab_user}@${::fqdn}"
   $gitlab_email_display_name = 'GitLab'
   $gitlab_email_reply_to = "noreply@${::fqdn}"
