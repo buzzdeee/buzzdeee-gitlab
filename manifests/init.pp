@@ -116,7 +116,9 @@ class gitlab (
 
   include gitlab::install
   include gitlab::gitconfig
+  include gitlab::service
 
   Class['gitlab::install'] ~>
-  Class['gitlab::gitconfig']
+  Class['gitlab::gitconfig'] ~>
+  Class['gitlab::service']
 }
