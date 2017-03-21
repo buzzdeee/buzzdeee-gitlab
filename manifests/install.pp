@@ -310,7 +310,7 @@ class gitlab::install (
     user        => $gitlab_user,
     cwd         => $unicorn_root,
     refreshonly => true,
-    timeout     => 2000,
+    timeout     => 3000,
     subscribe   => Exec['npm_install_production'],
     require     => File["${unicorn_root}/node_modules/webpack/bin/webpack.js"],
   }
