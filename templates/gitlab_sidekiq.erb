@@ -5,10 +5,11 @@
 daemon="bundle<%= @ruby_suffix %> exec sidekiq"
 daemon_flags="-C <%= @sidekiq_config %> -e production"
 daemon_user="<%= @gitlab_user %>"
+daemon_timeout="300"
 
 . /etc/rc.d/rc.subr
 
-pexp="ruby<%= @ruby_suffix %>: sidekiq.*gitlab.*(ruby<%= @ruby_suffix %>)"
+pexp="ruby<%= @ruby_suffix %>:.*sidekiq.*gitlab.*"
 rc_reload=NO
 
 rc_start() {
