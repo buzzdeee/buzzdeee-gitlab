@@ -8,7 +8,7 @@ daemon_user="<%= @gitlab_user %>"
 
 . /etc/rc.d/rc.subr
 
-pexp="ruby23 <%= @unicorn_root %>/vendor/bundle/ruby/2.3/bin/sidekiq ${daemon_flags:+${daemon_flags}}"
+pexp="ruby<%= @ruby_suffix %>: sidekiq.*gitlab.*(ruby<%= @ruby_suffix %>)"
 rc_reload=NO
 
 rc_start() {
