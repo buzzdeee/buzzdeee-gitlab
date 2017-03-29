@@ -14,7 +14,7 @@ rc_reload=NO
 
 rc_start() {
 	install -d -o ${daemon_user} /var/run/gitlab
-	cd <%= @unicorn_root %> && ${rcexec} \
+	${rcexec} "cd <%= @unicorn_root %> && \
 		${daemon} ${daemon_flags}"
 }
 
