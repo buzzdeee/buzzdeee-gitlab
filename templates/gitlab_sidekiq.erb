@@ -2,8 +2,8 @@
 #
 # This file is managed via Puppet
 
-daemon="bundle<%= @ruby_suffix %> exec sidekiq"
-daemon_flags="-C <%= @sidekiq_config %> -e production"
+daemon="bundle<%= @ruby_suffix %> exec sidekiq -d"
+daemon_flags="-C <%= @sidekiq_config %> -L <%= @sidekiq_log %> -e production"
 daemon_user="<%= @gitlab_user %>"
 daemon_timeout="300"
 
@@ -14,8 +14,8 @@ rc_reload=NO
 
 rc_start() {
 	install -d -o ${daemon_user} /var/run/gitlab
-	${rcexec} "cd <%= @unicorn_root %> && \
-		${daemon} ${daemon_flags} &"
+	cd <%= @unicorn_root %> && ${rcexec} \
+		${daemon} ${daemon_flags}"
 }
 
 rc_cmd $1

@@ -63,7 +63,7 @@ class gitlab::params {
   $workhorse_socket = '/var/run/gitlab/gitlab-workhorse.socket'
   $workhorse_document_root = '/var/www/gitlab/gitlab/public'
 
-  $sidekiq_log = '/var/log/gitlab/sidekiq.log'
+  $sidekiq_log = '/var/www/gitlab/gitlab/log/sidekiq.log'
   $sidekiq_pid = '/var/run/gitlab/sidekiq.pid'
   $sidekiq_config = '/var/www/gitlab/gitlab/config/sidekiq_queues.yml'
 
