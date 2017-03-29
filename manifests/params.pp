@@ -65,11 +65,11 @@ class gitlab::params {
 
   $sidekiq_log = '/var/log/gitlab/sidekiq.log'
   $sidekiq_pid = '/var/run/gitlab/sidekiq.pid'
-  $sidekiq_config  = '/etc/gitlab/sidekiq_queues.yml'
+  $sidekiq_config = '/var/www/gitlab/gitlab/config/sidekiq_queues.yml'
 
   $mail_room_enabled = false
   $mail_room_pid_path = '/var/run/gitlab/mail_room.pid'
-  $mail_room_config  = '/etc/gitlab/mail_room.yml'
+  $mail_room_config  = '/var/www/gitlab/gitlab/config/mail_room.yml'
 
   # NOT YET!!!
   $gitlab_pages_enabled = false
