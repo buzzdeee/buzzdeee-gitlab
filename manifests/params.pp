@@ -59,7 +59,7 @@ class gitlab::params {
   $gitlab_shell_self_signed_cert = 'false'
   $gitlab_shell_log_level = 'INFO'
 
-  $workhorse_log = '/var/log/gitlab/gitlab-workhorse.log'
+  $workhorse_log = '/var/www/gitlab/gitlab/log/gitlab-workhorse.log'
   $workhorse_socket = '/var/run/gitlab/gitlab-workhorse.socket'
   $workhorse_document_root = '/var/www/gitlab/gitlab/public'
 
