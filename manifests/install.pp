@@ -157,27 +157,39 @@ class gitlab::install (
     require => Vcsrepo[$unicorn_root],
   }
 
+  if !defined (File[dirname($workhorse_log)]) {
+    file { dirname($workhorse_log):
+      ensure  => 'directory',
+      owner   => $gitlab_user,
+      group   => $gitlab_group,
+      mode    => '0775',
+      require => Vcsrepo[$unicorn_root],
+    }
+  }
   if !defined (File[dirname($unicorn_stderr_log)]) {
     file { dirname($unicorn_stderr_log):
-      ensure => 'directory',
-      owner  => $gitlab_user,
-      group  => $gitlab_group,
+      ensure  => 'directory',
+      owner   => $gitlab_user,
+      group   => $gitlab_group,
+      mode    => '0775',
       require => Vcsrepo[$unicorn_root],
     }
   }
   if !defined (File[dirname($unicorn_stdout_log)]) {
     file { dirname($unicorn_stdout_log):
-      ensure => 'directory',
-      owner  => $gitlab_user,
-      group  => $gitlab_group,
+      ensure  => 'directory',
+      owner   => $gitlab_user,
+      group   => $gitlab_group,
+      mode    => '0775',
       require => Vcsrepo[$unicorn_root],
     }
   }
   if !defined (File[dirname($unicorn_socket)]) {
     file { dirname($unicorn_socket):
-      ensure => 'directory',
-      owner  => $gitlab_user,
-      group  => $gitlab_group,
+      ensure  => 'directory',
+      owner   => $gitlab_user,
+      group   => $gitlab_group,
+      mode    => '0775',
       require => Vcsrepo[$unicorn_root],
     }
   }
