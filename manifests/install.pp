@@ -329,9 +329,9 @@ class gitlab::install (
 
   if !defined (File[dirname($unicorn_pidfile)]) {
     file { dirname($unicorn_pidfile):
-      ensure => 'directory',
-      owner  => $gitlab_user,
-      group  => $gitlab_group,
+      ensure  => 'directory',
+      owner   => $gitlab_user,
+      group   => $gitlab_group,
       require => Vcsrepo[$unicorn_root],
     }
   }
