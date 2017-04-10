@@ -26,7 +26,7 @@ class gitlab::install (
   $workhorse_root = $::gitlab::workhorse_root,
   $gitlabshell_root = $::gitlab::gitlabshell_root,
   $web_chroot = $::gitlab::web_chroot,
-  
+
   $unicorn_port = $::gitlab::unicorn_port,
   $unicorn_relative_web_path = $::gitlab::unicorn_relative_web_path,
   $unicorn_stderr_log = $::gitlab::unicorn_stderr_log,
@@ -61,7 +61,7 @@ class gitlab::install (
   $sidekiq_log = $::gitlab::sidekiq_log,
   $sidekiq_pid = $::gitlab::sidekiq_pid,
   $sidekiq_config = $::gitlab::sidekiq_config,
-  
+
   $mail_room_enabled = $::gitlab::mail_room_enabled,
   $mail_room_pid_path = $::gitlab::mail_room_pid_path,
   $mail_room_config = $::gitlab::mail_room_config,
@@ -197,35 +197,35 @@ class gitlab::install (
   if !defined (File[$workhorse_socket_dir]) {
     if !defined (File[dirname($workhorse_socket_dir)]) {
       file { dirname($workhorse_socket_dir):
-        ensure => 'directory',
+        ensure  => 'directory',
         require => Vcsrepo[$unicorn_root],
       }
     }
     file { $workhorse_socket_dir:
-      ensure => 'directory',
-      owner  => $gitlab_user,
-      group  => $gitlab_group,
+      ensure  => 'directory',
+      owner   => $gitlab_user,
+      group   => $gitlab_group,
       require => Vcsrepo[$unicorn_root],
     }
   }
   file { "${unicorn_root}/public/uploads":
-    ensure => 'directory',
-    owner  => $gitlab_user,
-    group  => $gitlab_group,
-    mode   => '0700',
+    ensure  => 'directory',
+    owner   => $gitlab_user,
+    group   => $gitlab_group,
+    mode    => '0700',
     require => Vcsrepo[$unicorn_root],
   }
   file { [ "${unicorn_root}/builds", "${unicorn_root}/shared/artifacts", "${unicorn_root}/shared/pages" ]:
-    ensure => 'directory',
-    owner  => $gitlab_user,
-    group  => $gitlab_group,
+    ensure  => 'directory',
+    owner   => $gitlab_user,
+    group   => $gitlab_group,
     require => Vcsrepo[$unicorn_root],
   }
 
   exec { 'configure_building_nokogiri':
     command     => "bundle${ruby_suffix} config build.nokogiri --use-system-libraries --with-xml2-config=/usr/local/bin/xml2-config --with-xslt-config=/usr/local/bin/xslt-config", # lint:ignore:140chars
     environment => [ "HOME=${gitlab_home}",
-                     'CFLAGS="-I/usr/local/include/libxml2 -I/usr/local/include/ruby-2.3"', ],
+                      'CFLAGS="-I/usr/local/include/libxml2 -I/usr/local/include/ruby-2.3"', ],
     refreshonly => true,
     timeout     => 2000,
     subscribe   => Vcsrepo[$unicorn_root],
@@ -259,8 +259,8 @@ class gitlab::install (
   exec { 'install_gitlab_gems':
     command     => "bundle${ruby_suffix} install --deployment --without development test mysql aws kerberos",
     environment => [ "HOME=${gitlab_home}",
-                     'CFLAGS=-I/usr/local/include/libxml2',
-                     "PATH=${gitlab_home}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11R6/bin:/usr/local/sbin" ],
+                      'CFLAGS=-I/usr/local/include/libxml2',
+                      "PATH=${gitlab_home}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11R6/bin:/usr/local/sbin" ],
     user        => $gitlab_user,
     cwd         => $unicorn_root,
     refreshonly => true,
@@ -289,8 +289,8 @@ class gitlab::install (
   exec { 'install_gitlab_workhorse':
     command     => "bundle${ruby_suffix} exec rake${ruby_suffix} 'gitlab:workhorse:install[${workhorse_root}]' RAILS_ENV=production",
     environment => [ "HOME=${gitlab_home}",
-                     'CFLAGS=-I/usr/local/include/libxml2',
-                     "PATH=${gitlab_home}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11R6/bin:/usr/local/sbin" ],
+                      'CFLAGS=-I/usr/local/include/libxml2',
+                      "PATH=${gitlab_home}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11R6/bin:/usr/local/sbin" ],
     user        => $gitlab_user,
     cwd         => $unicorn_root,
     refreshonly => true,
@@ -299,10 +299,10 @@ class gitlab::install (
     require     => Exec['install_gitlab_gems'],
   }
   exec { 'npm_install_production':
-    command     => "npm install --production",
+    command     => 'npm install --production',
     environment => [ "HOME=${gitlab_home}",
-                     'CFLAGS=-I/usr/local/include/libxml2',
-                     "PATH=${gitlab_home}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11R6/bin:/usr/local/sbin" ],
+                      'CFLAGS=-I/usr/local/include/libxml2',
+                      "PATH=${gitlab_home}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11R6/bin:/usr/local/sbin" ],
     user        => $gitlab_user,
     cwd         => $unicorn_root,
     refreshonly => true,
@@ -317,8 +317,8 @@ class gitlab::install (
   exec { 'gitlab_assets_compile':
     command     => "bundle${ruby_suffix} exec rake${ruby_suffix} gitlab:assets:compile RAILS_ENV=production NODE_ENV=production",
     environment => [ "HOME=${gitlab_home}",
-                     'CFLAGS=-I/usr/local/include/libxml2',
-                     "PATH=${gitlab_home}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11R6/bin:/usr/local/sbin" ],
+                      'CFLAGS=-I/usr/local/include/libxml2',
+                      "PATH=${gitlab_home}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11R6/bin:/usr/local/sbin" ],
     user        => $gitlab_user,
     cwd         => $unicorn_root,
     refreshonly => true,
