@@ -6,7 +6,7 @@ define gitlab::mirror (
   $repopath,
   $url,
   $fetch = '+refs/*:refs/*',
-  $mirror = 'true',
+  $mirror = 'true',  # lint:ignore:quoted_booleans
   $gitlab_repositories_path = $::gitlab::gitlab_repositories_path,
   $user = $::gitlab::gitlab_user,
   $group = $::gitlab::gitlab_group,

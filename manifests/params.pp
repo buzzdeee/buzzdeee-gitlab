@@ -31,7 +31,7 @@ class gitlab::params {
   $unicorn_pidfile = '/var/run/gitlab/unicorn.pid'
   $unicorn_timeout = '60'
 
-  $auth_ldap_enabled = 'false'
+  $auth_ldap_enabled = 'false' # lint:ignore:quoted_booleans
   $auth_ldap_label = 'LDAP'
   $auth_ldap_server = 'auth_ldap_server'
   $auth_ldap_port = '389'
@@ -40,9 +40,9 @@ class gitlab::params {
   $auth_ldap_bind_dn = ''
   $auth_ldap_bind_pw = ''
   $auth_ldap_timeout = '10'
-  $auth_ldap_is_ad = 'false'
-  $auth_ldap_allow_username_or_email_login = 'false'
-  $auth_ldap_block_auto_created_users = 'false'
+  $auth_ldap_is_ad = 'false' # lint:ignore:quoted_booleans
+  $auth_ldap_allow_username_or_email_login = 'false' # lint:ignore:quoted_booleans
+  $auth_ldap_block_auto_created_users = 'false' # lint:ignore:quoted_booleans
   $auth_ldap_search_base = ''
   $auth_ldap_user_filter = ''
 
@@ -55,8 +55,8 @@ class gitlab::params {
   $gitlab_repositories_path = '/var/www/gitlab/repositories'
   $git_binary = '/usr/local/bin/git'
 
-  $gitlab_shell_audit_usernames = 'true'
-  $gitlab_shell_self_signed_cert = 'false'
+  $gitlab_shell_audit_usernames = 'true' # lint:ignore:quoted_booleans
+  $gitlab_shell_self_signed_cert = 'false' # lint:ignore:quoted_booleans
   $gitlab_shell_log_level = 'INFO'
 
   $workhorse_log = '/var/www/gitlab/gitlab/log/gitlab-workhorse.log'
