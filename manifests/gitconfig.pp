@@ -15,8 +15,7 @@ class gitlab::gitconfig (
   }
   git::config { 'repack.writeBitmaps':
     user    => $gitlab_user,
-    # lint:ignore:quoted_booleans
-    value   => 'true',
+    value   => 'true',  # lint:ignore:quoted_booleans
     require => User[$gitlab_user],
   }
 }

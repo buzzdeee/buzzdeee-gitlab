@@ -22,30 +22,30 @@ define gitlab::mirror (
   }
 
   file { "${gitlab_repositories_path}/${repopath}.git/custom_hooks/post-receive":
-    owner => $user,
-    group => $group,
-    mode  => '0755',
+    owner   => $user,
+    group   => $group,
+    mode    => '0755',
     content => "exec git push --quiet ${title} &",
   }
 
   ini_setting { "${repopath}_remote_${title}_url":
     ensure  => present,
     path    => "${gitlab_repositories_path}/${repopath}.git/config",
-    section => "remote \"$title\"",
+    section => "remote \"${title}\"",
     setting => 'url',
     value   => $url,
   }
   ini_setting { "${repopath}_remote_${title}_fetch":
     ensure  => present,
     path    => "${gitlab_repositories_path}/${repopath}.git/config",
-    section => "remote \"$title\"",
+    section => "remote \"${title}\"",
     setting => 'fetch',
     value   => $fetch,
   }
   ini_setting { "${repopath}_remote_${title}_mirror":
     ensure  => present,
     path    => "${gitlab_repositories_path}/${repopath}.git/config",
-    section => "remote \"$title\"",
+    section => "remote \"${title}\"",
     setting => 'mirror',
     value   => $mirror,
   }
