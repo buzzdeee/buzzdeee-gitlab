@@ -12,7 +12,7 @@ define gitlab::mirror (
   $group = $::gitlab::gitlab_group,
 ) {
 
-  require $::gitlab
+  require gitlab
 
   file { "${gitlab_repositories_path}/${repopath}.git/custom_hooks/":
     ensure => 'directory',
