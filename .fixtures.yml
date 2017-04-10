@@ -1,0 +1,6 @@
+fixtures:
+  repositories:
+    "inifile": "https://github.com/puppetlabs/puppetlabs-inifile.git"
+    "stdlib": "https://github.com/puppetlabs/puppetlabs-stdlib.git"
+  symlinks:
+    "profile": "#{source_dir}"
