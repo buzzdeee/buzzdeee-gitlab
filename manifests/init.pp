@@ -91,7 +91,7 @@ class gitlab (
   $auth_ldap_method = $::gitlab::params::auth_ldap_method,
   $auth_ldap_uid = $::gitlab::params::auth_ldap_uid,
   $auth_ldap_bind_dn = $::gitlab::params::auth_ldap_bind_dn,
-  $auth_ldap_bind_pw = $::gitlab::params::auth_ldap_bind_pw, 
+  $auth_ldap_bind_pw = $::gitlab::params::auth_ldap_bind_pw,
   $auth_ldap_timeout = $::gitlab::params::auth_ldap_timeout,
   $auth_ldap_is_ad = $::gitlab::params::auth_ldap_is_ad,
   $auth_ldap_allow_username_or_email_login = $::gitlab::params::auth_ldap_allow_username_or_email_login,
@@ -133,7 +133,7 @@ class gitlab (
   include gitlab::gitconfig
   include gitlab::service
 
-  Class['gitlab::install'] ~>
-  Class['gitlab::gitconfig'] ~>
-  Class['gitlab::service']
+  Class['gitlab::install']
+  ~> Class['gitlab::gitconfig']
+  ~> Class['gitlab::service']
 }

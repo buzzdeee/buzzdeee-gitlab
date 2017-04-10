@@ -111,49 +111,49 @@ class gitlab::install (
     owner   => 'root',
     group   => '0',
     mode    => '0644',
-    content => template("gitlab/gitlab.yml.erb"),
+    content => template('gitlab/gitlab.yml.erb'),
     require => Vcsrepo[$unicorn_root],
   }
   file { "${unicorn_root}/config/unicorn.rb":
     owner   => 'root',
     group   => '0',
     mode    => '0644',
-    content => template("gitlab/unicorn.rb.erb"),
+    content => template('gitlab/unicorn.rb.erb'),
     require => Vcsrepo[$unicorn_root],
   }
   file { "${unicorn_root}/config/initializers/relative_url.rb":
     owner   => 'root',
     group   => '0',
     mode    => '0644',
-    content => template("gitlab/relative_url.rb.erb"),
+    content => template('gitlab/relative_url.rb.erb'),
     require => Vcsrepo[$unicorn_root],
   }
   file { "${unicorn_root}/config/database.yml":
     owner   => 'root',
     group   => '0',
     mode    => '0644',
-    content => template("gitlab/database.yml.erb"),
+    content => template('gitlab/database.yml.erb'),
     require => Vcsrepo[$unicorn_root],
   }
   file { "${unicorn_root}/config/resque.yml":
     owner   => 'root',
     group   => '0',
     mode    => '0644',
-    content => template("gitlab/resque.yml.erb"),
+    content => template('gitlab/resque.yml.erb'),
     require => Vcsrepo[$unicorn_root],
   }
   file { "${unicorn_root}/config/secrets.yml":
     owner   => 'root',
     group   => $gitlab_group,
     mode    => '0640',
-    content => template("gitlab/secrets.yml.erb"),
+    content => template('gitlab/secrets.yml.erb'),
     require => Vcsrepo[$unicorn_root],
   }
   file { "${unicorn_root}/config/initializers/rack_attack.rb":
     owner   => 'root',
     group   => $gitlab_group,
     mode    => '0640',
-    content => template("gitlab/rack_attack.rb.erb"),
+    content => template('gitlab/rack_attack.rb.erb'),
     require => Vcsrepo[$unicorn_root],
   }
 
@@ -224,8 +224,8 @@ class gitlab::install (
 
   exec { 'configure_building_nokogiri':
     command     => "bundle${ruby_suffix} config build.nokogiri --use-system-libraries --with-xml2-config=/usr/local/bin/xml2-config --with-xslt-config=/usr/local/bin/xslt-config",
-    environment => [ "HOME=$gitlab_home",
-                     "CFLAGS='-I/usr/local/include/libxml2 -I/usr/local/include/ruby-2.3", ],
+    environment => [ "HOME=${gitlab_home}",
+                     'CFLAGS="-I/usr/local/include/libxml2 -I/usr/local/include/ruby-2.3"', ],
     refreshonly => true,
     timeout     => 2000,
     subscribe   => Vcsrepo[$unicorn_root],
@@ -258,8 +258,8 @@ class gitlab::install (
   }
   exec { 'install_gitlab_gems':
     command     => "bundle${ruby_suffix} install --deployment --without development test mysql aws kerberos",
-    environment => [ "HOME=$gitlab_home",
-                     "CFLAGS=-I/usr/local/include/libxml2",
+    environment => [ "HOME=${gitlab_home}",
+                     'CFLAGS=-I/usr/local/include/libxml2',
                      "PATH=${gitlab_home}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11R6/bin:/usr/local/sbin" ],
     user        => $gitlab_user,
     cwd         => $unicorn_root,
@@ -270,7 +270,7 @@ class gitlab::install (
   }
   exec { 'install_gitlab_shell':
     command     => "bundle${ruby_suffix} exec rake${ruby_suffix} gitlab:shell:install REDIS_URL=unix:${redis_socket} RAILS_ENV=production SKIP_STORAGE_VALIDATION=true",
-    environment => "HOME=$gitlab_home",
+    environment => "HOME=${gitlab_home}",
     user        => $gitlab_user,
     cwd         => $unicorn_root,
     refreshonly => true,
@@ -288,8 +288,8 @@ class gitlab::install (
 
   exec { 'install_gitlab_workhorse':
     command     => "bundle${ruby_suffix} exec rake${ruby_suffix} 'gitlab:workhorse:install[${workhorse_root}]' RAILS_ENV=production",
-    environment => [ "HOME=$gitlab_home",
-                     "CFLAGS=-I/usr/local/include/libxml2",
+    environment => [ "HOME=${gitlab_home}",
+                     'CFLAGS=-I/usr/local/include/libxml2',
                      "PATH=${gitlab_home}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11R6/bin:/usr/local/sbin" ],
     user        => $gitlab_user,
     cwd         => $unicorn_root,
@@ -300,8 +300,8 @@ class gitlab::install (
   }
   exec { 'npm_install_production':
     command     => "npm install --production",
-    environment => [ "HOME=$gitlab_home",
-                     "CFLAGS=-I/usr/local/include/libxml2",
+    environment => [ "HOME=${gitlab_home}",
+                     'CFLAGS=-I/usr/local/include/libxml2',
                      "PATH=${gitlab_home}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11R6/bin:/usr/local/sbin" ],
     user        => $gitlab_user,
     cwd         => $unicorn_root,
@@ -316,8 +316,8 @@ class gitlab::install (
   }
   exec { 'gitlab_assets_compile':
     command     => "bundle${ruby_suffix} exec rake${ruby_suffix} gitlab:assets:compile RAILS_ENV=production NODE_ENV=production",
-    environment => [ "HOME=$gitlab_home",
-                     "CFLAGS=-I/usr/local/include/libxml2",
+    environment => [ "HOME=${gitlab_home},
+                     'CFLAGS=-I/usr/local/include/libxml2',
                      "PATH=${gitlab_home}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11R6/bin:/usr/local/sbin" ],
     user        => $gitlab_user,
     cwd         => $unicorn_root,
