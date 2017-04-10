@@ -35,7 +35,7 @@ class gitlab::params {
   $auth_ldap_label = 'LDAP'
   $auth_ldap_server = 'auth_ldap_server'
   $auth_ldap_port = '389'
-  $auth_ldap_method = 'plain'	# may also be 'tls' or 'ssl'
+  $auth_ldap_method = 'plain'  # may also be 'tls' or 'ssl'
   $auth_ldap_uid = 'uid'
   $auth_ldap_bind_dn = ''
   $auth_ldap_bind_pw = ''

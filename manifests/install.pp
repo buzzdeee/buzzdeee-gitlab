@@ -223,7 +223,7 @@ class gitlab::install (
   }
 
   exec { 'configure_building_nokogiri':
-    command     => "bundle${ruby_suffix} config build.nokogiri --use-system-libraries --with-xml2-config=/usr/local/bin/xml2-config --with-xslt-config=/usr/local/bin/xslt-config",
+    command     => "bundle${ruby_suffix} config build.nokogiri --use-system-libraries --with-xml2-config=/usr/local/bin/xml2-config --with-xslt-config=/usr/local/bin/xslt-config", # lint:ignore:140chars
     environment => [ "HOME=${gitlab_home}",
                      'CFLAGS="-I/usr/local/include/libxml2 -I/usr/local/include/ruby-2.3"', ],
     refreshonly => true,
@@ -269,7 +269,7 @@ class gitlab::install (
     require     => File["${gitlab_home}/bin/make"],
   }
   exec { 'install_gitlab_shell':
-    command     => "bundle${ruby_suffix} exec rake${ruby_suffix} gitlab:shell:install REDIS_URL=unix:${redis_socket} RAILS_ENV=production SKIP_STORAGE_VALIDATION=true",
+    command     => "bundle${ruby_suffix} exec rake${ruby_suffix} gitlab:shell:install REDIS_URL=unix:${redis_socket} RAILS_ENV=production SKIP_STORAGE_VALIDATION=true", # lint:ignore:140chars
     environment => "HOME=${gitlab_home}",
     user        => $gitlab_user,
     cwd         => $unicorn_root,
@@ -316,7 +316,7 @@ class gitlab::install (
   }
   exec { 'gitlab_assets_compile':
     command     => "bundle${ruby_suffix} exec rake${ruby_suffix} gitlab:assets:compile RAILS_ENV=production NODE_ENV=production",
-    environment => [ "HOME=${gitlab_home},
+    environment => [ "HOME=${gitlab_home}",
                      'CFLAGS=-I/usr/local/include/libxml2',
                      "PATH=${gitlab_home}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11R6/bin:/usr/local/sbin" ],
     user        => $gitlab_user,
