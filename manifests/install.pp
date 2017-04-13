@@ -1,7 +1,7 @@
 # The class that takes care of the installation
 class gitlab::install (
   $gitlab_version = $::gitlab::gitlab_version,
-  $gitlab_giturl = $::gitlab::giturl,
+  $gitlab_giturl = $::gitlab::gitlab_giturl,
   $ruby_suffix = $::gitlab::ruby_suffix,
   $manage_user = $::gitlab::manage_user,
   $gitlab_user = $::gitlab::gitlab_user,
