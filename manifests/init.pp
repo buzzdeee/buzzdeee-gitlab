@@ -44,6 +44,7 @@
 #
 class gitlab (
   $gitlab_version,
+  $gitlab_giturl = $::gitlab::params::gitlab_giturl,
   $db_key_base = 'changeme',
   $secret_key_base = 'changeme',
   $otp_key_base = 'changeme',

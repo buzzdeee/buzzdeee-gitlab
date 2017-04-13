@@ -1,6 +1,7 @@
 # The class that takes care of the installation
 class gitlab::install (
   $gitlab_version = $::gitlab::gitlab_version,
+  $gitlab_giturl = $::gitlab::giturl,
   $ruby_suffix = $::gitlab::ruby_suffix,
   $manage_user = $::gitlab::manage_user,
   $gitlab_user = $::gitlab::gitlab_user,
@@ -102,7 +103,7 @@ class gitlab::install (
   vcsrepo { $unicorn_root:
     ensure   => present,
     provider => git,
-    source   => 'https://gitlab.com/gitlab-org/gitlab-ce.git',
+    source   => $gitlab_giturl,
     revision => $gitlab_version,
     user     => $gitlab_user,
   }
