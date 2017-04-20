@@ -13,7 +13,7 @@ pexp="ruby<%= @ruby_suffix %>: unicorn_rails<%= @ruby_suffix %> master -D ${daem
 rc_reload=NO
 
 rc_start() {
-	install -d -o ${daemon_user} /var/run/gitlab
+	install -d -o ${daemon_user} -m <%= @gitlab_rundir_mode %> /var/run/gitlab
 	${rcexec} "cd <%= @unicorn_root %> && \
 		${daemon} ${daemon_flags} &"
 }

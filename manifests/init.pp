@@ -59,6 +59,8 @@ class gitlab (
   $gitlab_email_reply_to = $::gitlab::params::gitlab_email_reply_to,
   $gitlab_email_subject_suffix = $::gitlab::params::gitlab_email_subject_suffix,
 
+  $gitlab_rundir_mode = $::gitlab::params::gitlab_rundir_mode,
+
   $gitlab_satellites_path = $::gitlab::params::gitlab_satellites_path,
   $gitlab_repositories_path = $::gitlab::params::gitlab_repositories_path,
   $git_binary = $::gitlab::params::git_binary,

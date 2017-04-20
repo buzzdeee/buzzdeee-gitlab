@@ -20,6 +20,8 @@ class gitlab::params {
   $gitlab_gid = '999'
   $gitlab_groups = [ '_redis', ]
 
+  $gitlab_rundir_mode = '0775'
+
   $unicorn_root = '/var/www/gitlab/gitlab'
   $workhorse_root = '/var/www/gitlab/gitlab-workhorse'
   $gitlabshell_root = '/var/www/gitlab/gitlab-shell'

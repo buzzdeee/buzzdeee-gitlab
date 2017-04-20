@@ -19,6 +19,8 @@ class gitlab::install (
   $gitlab_email_reply_to = $::gitlab::gitlab_email_reply_to,
   $gitlab_email_subject_suffix = $::gitlab::gitlab_email_subject_suffix,
 
+  $gitlab_rundir_mode = $::gitlab::gitlab_rundir_mode,
+
   $gitlab_satellites_path = $::gitlab::gitlab_satellites_path,
   $gitlab_repositories_path = $::gitlab::gitlab_repositories_path,
   $git_binary  =$::gitlab::git_binary,
@@ -190,7 +192,7 @@ class gitlab::install (
       ensure  => 'directory',
       owner   => $gitlab_user,
       group   => $gitlab_group,
-      mode    => '0775',
+      mode    => $gitlab_rundir_mode,
       require => Vcsrepo[$unicorn_root],
     }
   }
