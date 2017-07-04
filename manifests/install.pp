@@ -10,6 +10,7 @@ class gitlab::install (
   $gitlab_usershell = $::gitlab::gitlab_usershell,
   $gitlab_uid = $::gitlab::gitlab_uid,
   $gitlab_gid = $::gitlab::gitlab_gid,
+  $gitlab_loginclass = $::gitlab::gitlab_loginclass,
   $gitlab_groups = $::gitlab::gitlab_groups,
 
   $web_hostname = $::gitlab::web_hostname,
@@ -280,7 +281,7 @@ class gitlab::install (
   exec { 'install_gitlab_shell':
     command     => "bundle${ruby_suffix} exec rake${ruby_suffix} gitlab:shell:install REDIS_URL=unix:${redis_socket} RAILS_ENV=production SKIP_STORAGE_VALIDATION=true", # lint:ignore:140chars
     environment => [ "HOME=${gitlab_home}",
-                     "PATH=${gitlab_home}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11R6/bin:/usr/local/sbin" ],
+                      "PATH=${gitlab_home}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11R6/bin:/usr/local/sbin" ],
     user        => $gitlab_user,
     cwd         => $unicorn_root,
     refreshonly => false,
