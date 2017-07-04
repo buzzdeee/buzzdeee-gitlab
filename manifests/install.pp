@@ -61,6 +61,7 @@ class gitlab::install (
   $gitlab_shell_audit_usernames = $::gitlab::gitlab_shell_audit_usernames,
   $gitlab_shell_self_signed_cert = $::gitlab::gitlab_shell_self_signed_cert,
   $gitlab_shell_log_level = $::gitlab::gitlab_shell_log_level,
+  $gitlab_shell_log_file = $::gitlab::gitlab_shell_log_file,
 
   $sidekiq_log = $::gitlab::sidekiq_log,
   $sidekiq_pid = $::gitlab::sidekiq_pid,
