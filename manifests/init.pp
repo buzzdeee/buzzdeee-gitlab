@@ -72,6 +72,7 @@ class gitlab (
   $gitlab_usershell = $::gitlab::params::gitlab_usershell,
   $gitlab_uid = $::gitlab::params::gitlab_uid,
   $gitlab_gid = $::gitlab::params::gitlab_gid,
+  $gitlab_loginclass = $::gitlab::params::gitlab_loginclass,
   $gitlab_groups = $::gitlab::params::gitlab_groups,
 
   $unicorn_root = $::gitlab::params::unicorn_root,

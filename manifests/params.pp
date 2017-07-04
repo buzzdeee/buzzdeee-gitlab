@@ -18,6 +18,7 @@ class gitlab::params {
   $gitlab_usershell = '/usr/local/bin/bash'
   $gitlab_uid = '999'
   $gitlab_gid = '999'
+  $gitlab_loginclass = 'staff'
   $gitlab_groups = [ '_redis', ]
 
   $gitlab_rundir_mode = '0775'
