@@ -72,6 +72,7 @@ class gitlab (
   $gitlab_usershell = $::gitlab::params::gitlab_usershell,
   $gitlab_uid = $::gitlab::params::gitlab_uid,
   $gitlab_gid = $::gitlab::params::gitlab_gid,
+  $gitlab_loginclass = $::gitlab::params::gitlab_loginclass,
   $gitlab_groups = $::gitlab::params::gitlab_groups,
 
   $unicorn_root = $::gitlab::params::unicorn_root,
@@ -113,6 +114,7 @@ class gitlab (
   $gitlab_shell_audit_usernames = $::gitlab::params::gitlab_shell_audit_usernames,
   $gitlab_shell_self_signed_cert = $::gitlab::params::gitlab_shell_self_signed_cert,
   $gitlab_shell_log_level = $::gitlab::params::gitlab_shell_log_level,
+  $gitlab_shell_log_file = $::gitlab::params::gitlab_shell_log_file,
 
   $mail_room_enabled = $::gitlab::params::mail_room_enabled,
   $mail_room_pid_path = $::gitlab::params::mail_room_pid_path,

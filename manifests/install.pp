@@ -10,6 +10,7 @@ class gitlab::install (
   $gitlab_usershell = $::gitlab::gitlab_usershell,
   $gitlab_uid = $::gitlab::gitlab_uid,
   $gitlab_gid = $::gitlab::gitlab_gid,
+  $gitlab_loginclass = $::gitlab::gitlab_loginclass,
   $gitlab_groups = $::gitlab::gitlab_groups,
 
   $web_hostname = $::gitlab::web_hostname,
@@ -60,6 +61,7 @@ class gitlab::install (
   $gitlab_shell_audit_usernames = $::gitlab::gitlab_shell_audit_usernames,
   $gitlab_shell_self_signed_cert = $::gitlab::gitlab_shell_self_signed_cert,
   $gitlab_shell_log_level = $::gitlab::gitlab_shell_log_level,
+  $gitlab_shell_log_file = $::gitlab::gitlab_shell_log_file,
 
   $sidekiq_log = $::gitlab::sidekiq_log,
   $sidekiq_pid = $::gitlab::sidekiq_pid,
@@ -96,6 +98,7 @@ class gitlab::install (
       home       => $gitlab_home,
       shell      => $gitlab_usershell,
       uid        => $gitlab_uid,
+      loginclass => $gitlab_loginclass,
       gid        => $gitlab_gid,
       groups     => $gitlab_groups,
       managehome => true,
@@ -278,13 +281,15 @@ class gitlab::install (
   }
   exec { 'install_gitlab_shell':
     command     => "bundle${ruby_suffix} exec rake${ruby_suffix} gitlab:shell:install REDIS_URL=unix:${redis_socket} RAILS_ENV=production SKIP_STORAGE_VALIDATION=true", # lint:ignore:140chars
-    environment => "HOME=${gitlab_home}",
+    environment => [ "HOME=${gitlab_home}",
+                      "PATH=${gitlab_home}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11R6/bin:/usr/local/sbin" ],
     user        => $gitlab_user,
     cwd         => $unicorn_root,
-    refreshonly => true,
+    refreshonly => false,
     timeout     => 2000,
     subscribe   => Vcsrepo[$unicorn_root],
-    require     => Exec['install_gitlab_gems'],
+    creates     => '/var/www/gitlab/gitlab-shell',
+    require     => [ Exec['install_gitlab_gems'], Vcsrepo[$unicorn_root], ],
   }
   file { "${gitlabshell_root}/config.yml":
     owner   => 'root',
@@ -301,10 +306,10 @@ class gitlab::install (
                       "PATH=${gitlab_home}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11R6/bin:/usr/local/sbin" ],
     user        => $gitlab_user,
     cwd         => $unicorn_root,
-    refreshonly => true,
+    refreshonly => false,
     timeout     => 3000,
-    subscribe   => Vcsrepo[$unicorn_root],
-    require     => Exec['install_gitlab_gems'],
+    creates     => '/var/www/gitlab/gitlab-workhorse',
+    require     => [ Exec['install_gitlab_gems'], Vcsrepo[$unicorn_root], ],
   }
   exec { 'npm_install_production':
     command     => 'npm install --production',

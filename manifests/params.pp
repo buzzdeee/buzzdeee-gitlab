@@ -18,6 +18,7 @@ class gitlab::params {
   $gitlab_usershell = '/usr/local/bin/bash'
   $gitlab_uid = '999'
   $gitlab_gid = '999'
+  $gitlab_loginclass = 'staff'
   $gitlab_groups = [ '_redis', ]
 
   $gitlab_rundir_mode = '0775'
@@ -29,8 +30,8 @@ class gitlab::params {
 
   $unicorn_port = '8080'
   $unicorn_relative_web_path = '/gitlab'
-  $unicorn_stderr_log = '/var/log/gitlab/unicorn.stderr.log'
-  $unicorn_stdout_log = '/var/log/gitlab/unicorn.stdout.log'
+  $unicorn_stderr_log = '/var/www/gitlab/gitlab/log/unicorn.stderr.log'
+  $unicorn_stdout_log = '/var/www/gitlab/gitlab/log/unicorn.stdout.log'
   $unicorn_socket = '/var/run/gitlab/gitlab.socket'
   $unicorn_pidfile = '/var/run/gitlab/unicorn.pid'
   $unicorn_timeout = '60'
@@ -62,6 +63,7 @@ class gitlab::params {
   $gitlab_shell_audit_usernames = 'true' # lint:ignore:quoted_booleans
   $gitlab_shell_self_signed_cert = 'false' # lint:ignore:quoted_booleans
   $gitlab_shell_log_level = 'INFO'
+  $gitlab_shell_log_file = '/var/www/gitlab/gitlab/log/gitlab-shell.log'
 
   $workhorse_log = '/var/www/gitlab/gitlab/log/gitlab-workhorse.log'
   $workhorse_socket = '/var/run/gitlab/gitlab-workhorse.socket'
