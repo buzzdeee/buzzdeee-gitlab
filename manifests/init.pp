@@ -63,7 +63,9 @@ class gitlab (
 
   $gitlab_satellites_path = $::gitlab::params::gitlab_satellites_path,
   $gitlab_repositories_path = $::gitlab::params::gitlab_repositories_path,
+  $gitlab_gitaly_address = $::gitlab::params::gitlab_gitaly_address,
   $git_binary = $::gitlab::params::git_binary,
+  $gitlab_gitaly_client_path = $::gitlab::params::gitlab_gitaly_client_path,
 
   $manage_user = $::gitlab::params::manage_user,
   $gitlab_user = $::gitlab::params::gitlab_user,
@@ -78,7 +80,10 @@ class gitlab (
   $unicorn_root = $::gitlab::params::unicorn_root,
   $workhorse_root = $::gitlab::params::workhorse_root,
   $gitlabshell_root = $::gitlab::params::gitlabshell_root,
+  $gitaly_root = $::gitlab::params::gitaly_root,
   $web_chroot = $::gitlab::params::web_chroot,
+  
+  $gitaly_log_file = $::gitlab::params::gitaly_log_file,
 
   $unicorn_port = $::gitlab::params::unicorn_port,
   $unicorn_relative_web_path = $::gitlab::params::unicorn_relative_web_path,

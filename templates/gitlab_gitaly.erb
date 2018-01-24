@@ -1,0 +1,21 @@
+#!/bin/sh
+#
+# This file is managed via Puppet
+
+daemon="gitaly"
+daemon_flags="/var/www/gitlab/gitaly/config.toml"
+daemon_user="<%= @gitlab_user %>"
+
+. /etc/rc.d/rc.subr
+
+pexp="${daemon} ${daemon_flags:+${daemon_flags}}"
+rc_reload=NO
+
+rc_start() {
+	${rcexec} "cd <%= @gitaly_root %> && \
+		/usr/bin/env PATH=<%= @gitlab_home %>/bin:<%= @gitaly_root %>:$PATH ${daemon} ${daemon_flags} \
+			2>><%= @gitaly_log_file %> \
+			>><%= @gitaly_log_file %> &"
+}
+
+rc_cmd $1
