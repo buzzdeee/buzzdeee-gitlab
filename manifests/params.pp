@@ -26,6 +26,7 @@ class gitlab::params {
   $unicorn_root = '/var/www/gitlab/gitlab'
   $workhorse_root = '/var/www/gitlab/gitlab-workhorse'
   $gitlabshell_root = '/var/www/gitlab/gitlab-shell'
+  $gitaly_root = '/var/www/gitlab/gitaly'
   $web_chroot = '/var/www'
 
   $unicorn_port = '8080'
@@ -58,12 +59,17 @@ class gitlab::params {
 
   $gitlab_satellites_path = '/var/www/gitlab/gitlab-satellites'
   $gitlab_repositories_path = '/var/www/gitlab/repositories'
+  $gitlab_gitaly_address = 'unix:/var/www/gitlab/gitlab/tmp/sockets/private/gitaly.socket'
   $git_binary = '/usr/local/bin/git'
+
+  $gitlab_gitaly_client_path = '/var/www/gitlab/gitaly/bin'
 
   $gitlab_shell_audit_usernames = 'true' # lint:ignore:quoted_booleans
   $gitlab_shell_self_signed_cert = 'false' # lint:ignore:quoted_booleans
   $gitlab_shell_log_level = 'INFO'
   $gitlab_shell_log_file = '/var/www/gitlab/gitlab/log/gitlab-shell.log'
+
+  $gitaly_log_file = '/var/www/gitlab/gitlab/log/gitaly.log'
 
   $workhorse_log = '/var/www/gitlab/gitlab/log/gitlab-workhorse.log'
   $workhorse_socket = '/var/run/gitlab/gitlab-workhorse.socket'

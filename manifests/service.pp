@@ -9,6 +9,10 @@ class gitlab::service (
     ensure => 'running',
     enable => true,
   }
+  service { 'gitlab_gitaly':
+    ensure => 'running',
+    enable => true,
+  }
   service { 'gitlab_workhorse':
     ensure => 'running',
     enable => true,

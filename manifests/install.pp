@@ -22,13 +22,18 @@ class gitlab::install (
 
   $gitlab_rundir_mode = $::gitlab::gitlab_rundir_mode,
 
+  $gitaly_log_file = $::gitlab::gitaly_log_file,
+
   $gitlab_satellites_path = $::gitlab::gitlab_satellites_path,
   $gitlab_repositories_path = $::gitlab::gitlab_repositories_path,
-  $git_binary  =$::gitlab::git_binary,
+  $gitlab_gitaly_address = $::gitlab::gitlab_gitaly_address,
+  $git_binary = $::gitlab::git_binary,
+  $gitlab_gitaly_client_path = $::gitlab::gitlab_gitaly_client_path,
 
   $unicorn_root = $::gitlab::unicorn_root,
   $workhorse_root = $::gitlab::workhorse_root,
   $gitlabshell_root = $::gitlab::gitlabshell_root,
+  $gitaly_root = $::gitlab::gitaly_root,
   $web_chroot = $::gitlab::web_chroot,
 
   $unicorn_port = $::gitlab::unicorn_port,
@@ -151,7 +156,7 @@ class gitlab::install (
   file { "${unicorn_root}/config/secrets.yml":
     owner   => 'root',
     group   => $gitlab_group,
-    mode    => '0640',
+    mode    => '0660',
     content => template('gitlab/secrets.yml.erb'),
     require => Vcsrepo[$unicorn_root],
   }
@@ -232,6 +237,7 @@ class gitlab::install (
     command     => "bundle${ruby_suffix} config build.nokogiri --use-system-libraries --with-xml2-config=/usr/local/bin/xml2-config --with-xslt-config=/usr/local/bin/xslt-config", # lint:ignore:140chars
     environment => [ "HOME=${gitlab_home}",
                       'CFLAGS="-I/usr/local/include/libxml2 -I/usr/local/include/ruby-2.3"', ],
+    user        => $gitlab_user,
     refreshonly => true,
     timeout     => 2000,
     subscribe   => Vcsrepo[$unicorn_root],
@@ -308,24 +314,57 @@ class gitlab::install (
     cwd         => $unicorn_root,
     refreshonly => false,
     timeout     => 3000,
-    creates     => '/var/www/gitlab/gitlab-workhorse',
+    creates     => $workhorse_root,
     require     => [ Exec['install_gitlab_gems'], Vcsrepo[$unicorn_root], ],
   }
-  exec { 'npm_install_production':
-    command     => 'npm install --production',
+  exec { 'install_gitaly':
+    command     => "bundle${ruby_suffix} exec rake${ruby_suffix} 'gitlab:gitaly:install[${gitaly_root},https://github.com/buzzdeee/gitaly.git]' RAILS_ENV=production",
     environment => [ "HOME=${gitlab_home}",
-                      'CFLAGS=-I/usr/local/include/libxml2',
+                      "PATH=${gitlab_home}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11R6/bin:/usr/local/sbin" ],
+    user        => $gitlab_user,
+    cwd         => $unicorn_root,
+    refreshonly => false,
+    timeout     => 3000,
+    creates     => $gitaly_root,
+    require     => [ Exec['install_gitlab_workhorse'], Vcsrepo[$unicorn_root], ],
+  }
+  #exec { 'npm_install_production':
+  #  command     => 'npm install --production',
+  #  environment => [ "HOME=${gitlab_home}",
+  #                    'CFLAGS=-I/usr/local/include/libxml2',
+  #                    "PATH=${gitlab_home}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11R6/bin:/usr/local/sbin" ],
+  #  user        => $gitlab_user,
+  #  cwd         => $unicorn_root,
+  #  refreshonly => true,
+  #  timeout     => 2000,
+  #  subscribe   => Vcsrepo[$unicorn_root],
+  #  require     => Exec['install_gitlab_gems'],
+  #}
+  
+  exec { 'gitlab_compile_gettext':
+    command     => "bundle${ruby_suffix} exec rake${ruby_suffix} gettext:compile RAILS_ENV=production",
+    environment => [ "HOME=${gitlab_home}",
                       "PATH=${gitlab_home}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11R6/bin:/usr/local/sbin" ],
     user        => $gitlab_user,
     cwd         => $unicorn_root,
     refreshonly => true,
-    timeout     => 2000,
-    subscribe   => Vcsrepo[$unicorn_root],
-    require     => Exec['install_gitlab_gems'],
+    timeout     => 3000,
+    subscribe   => [ Exec['install_gitlab_workhorse'], Vcsrepo[$unicorn_root], ],
+    before      => Exec['yarn_install'],
+  }
+  exec { 'yarn_install':
+    command     => "yarn install --production --pure-lockfile",
+    environment => [ "HOME=${gitlab_home}",
+                      "PATH=${gitlab_home}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11R6/bin:/usr/local/sbin" ],
+    user        => $gitlab_user,
+    cwd         => $unicorn_root,
+    refreshonly => true,
+    timeout     => 3000,
+    subscribe   => [ Exec['install_gitlab_workhorse'], Vcsrepo[$unicorn_root], ],
   }
   file { "${unicorn_root}/node_modules/webpack/bin/webpack.js":
     mode    => '0755',
-    require => Exec['npm_install_production'],
+    require => Exec['yarn_install'],
   }
   exec { 'gitlab_assets_compile':
     command     => "bundle${ruby_suffix} exec rake${ruby_suffix} gitlab:assets:compile RAILS_ENV=production NODE_ENV=production",
@@ -336,7 +375,7 @@ class gitlab::install (
     cwd         => $unicorn_root,
     refreshonly => true,
     timeout     => 3000,
-    subscribe   => Exec['npm_install_production'],
+    subscribe   => Exec['yarn_install'],
     require     => File["${unicorn_root}/node_modules/webpack/bin/webpack.js"],
   }
 
@@ -352,7 +391,8 @@ class gitlab::install (
   $rc_scripts = [ 'gitlab_unicorn',
                   'gitlab_mail_room',
                   'gitlab_sidekiq',
-                  'gitlab_workhorse',
+                  'gitlab_sidekiq',
+                  'gitlab_gitaly',
                 ]
   $rc_scripts.each |String $script| {
     file { "/etc/rc.d/${script}":
