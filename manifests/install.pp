@@ -110,6 +110,21 @@ class gitlab::install (
     }
   }
 
+  vcsrepo { '/usr/src/re2':
+    ensure   => 'present',
+    provider => 'git',
+    source   => 'https://code.googlesource.com/re2',
+  }
+
+  exec { 'build_and_install_re2':
+    command     => "/usr/local/bin/gmake install",
+    cwd         => '/usr/src/re2',
+    environment => [ "CC=clang", "CXX=clang++" ],
+    require     => Vcsrepo['/usr/src/re2'],
+    before      => Vcsrepo[$unicorn_root],
+    creates     => '/usr/local/lib/libre2.a',
+  }
+
   vcsrepo { $unicorn_root:
     ensure   => present,
     provider => git,
