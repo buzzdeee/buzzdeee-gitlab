@@ -319,6 +319,13 @@ class gitlab::install (
     content => template('gitlab/gitlab_shell_config.yml.erb'),
     require => Exec['install_gitlab_shell'],
   }
+  exec { 'fixup_ruby_path_in_gitlab_shell_scripts':
+    command => "/usr/bin/sed -i 's|/usr/bin/env ruby|${gitlab_home}/bin/ruby|' *",
+    user    => $gitlab_user,
+    cwd     => $gitlabshell_root,
+    onlyif  => '/usr/bin/grep \'/usr/bin/env ruby\' * >> /dev/null 2>>/dev/null',
+    require => Exec['install_gitlab_shell'],
+  }
 
   exec { 'install_gitlab_workhorse':
     command     => "bundle${ruby_suffix} exec rake${ruby_suffix} 'gitlab:workhorse:install[${workhorse_root}]' RAILS_ENV=production",
