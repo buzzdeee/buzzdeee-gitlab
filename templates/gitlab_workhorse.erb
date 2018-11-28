@@ -14,7 +14,7 @@ rc_reload=NO
 rc_start() {
 	install -d -o ${daemon_user} -m <%= @gitlab_rundir_mode %> /var/run/gitlab
 	${rcexec} "cd <%= @unicorn_root %> && \
-		/usr/bin/env PATH=<%= @workhorse_root %>:$PATH ${daemon} ${daemon_flags} \
+		/usr/bin/env PATH=<%= @workhorse_root %>:/usr/local/bin:$PATH ${daemon} ${daemon_flags} \
 			2>><%= @workhorse_log %> \
 			>><%= @workhorse_log %> &"
 }
