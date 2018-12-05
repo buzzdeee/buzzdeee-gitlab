@@ -2,29 +2,30 @@ stages:
   - test
   - deploy
 
-variables:
-  RUBYSUFFIX: '23'
-
 puppet-lint:
   script:
-    - "puppet-lint${RUBYSUFFIX} --relative --fail-on-warnings --with-filename --with-context manifests"
+    - "SFX=`facter -p --custom-dir /var/puppetlabs/puppet/cache/lib/facter rubysuffix 2>>/dev/null`"
+    - "puppet-lint${SFX} --relative --fail-on-warnings --with-filename --with-context manifests"
   stage: test
 
 template-test:
   script:
+    - "SFX=`facter -p --custom-dir /var/puppetlabs/puppet/cache/lib/facter rubysuffix 2>>/dev/null`"
     - "if [ -d templates ];then"
-    - "erb$RUBYSUFFIX -x -T '-' templates/*erb | ruby${RUBYSUFFIX} -c"
+    - "erb${SFX} -x -T '-' templates/*erb | ruby${SFX} -c"
     - "fi"
   stage: test
 
 rake-test:
   script:
-    - "rake$RUBYSUFFIX spec SPEC_OPTS='--format documentation'"
+    - "SFX=`facter -p --custom-dir /var/puppetlabs/puppet/cache/lib/facter rubysuffix 2>>/dev/null`"
+    - "rake${SFX} spec SPEC_OPTS='--format documentation'"
   stage: test
 
 deploy:
   script:
-    - "sudo /usr/local/bin/r10k${RUBYSUFFIX} deploy module gitlab -v"
+    - "SFX=`facter -p --custom-dir /var/puppetlabs/puppet/cache/lib/facter rubysuffix 2>>/dev/null`"
+    - "sudo /usr/local/bin/r10k${SFX} deploy module gitlab -v"
   stage: deploy
   only:
     - master
