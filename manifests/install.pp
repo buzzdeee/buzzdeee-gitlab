@@ -347,7 +347,7 @@ class gitlab::install (
     require     => [ Exec['install_gitlab_gems'], Vcsrepo[$unicorn_root], ],
   }
   exec { 'install_gitaly':
-    command     => "bundle${ruby_suffix} exec rake${ruby_suffix} 'gitlab:gitaly:install[${gitaly_root},https://github.com/buzzdeee/gitaly.git]' RAILS_ENV=production",
+    command     => "bundle${ruby_suffix} exec rake${ruby_suffix} 'gitlab:gitaly:install[${gitaly_root},${gitlab_repositories_path}]' RAILS_ENV=production",
     environment => [ "HOME=${gitlab_home}",
                       "PATH=${gitlab_home}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11R6/bin:/usr/local/sbin" ],
     user        => $gitlab_user,
