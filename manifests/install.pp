@@ -110,10 +110,12 @@ class gitlab::install (
     }
   }
 
+  # newer revisions are incompatible with re2 Ruby gem
   vcsrepo { '/usr/src/re2':
     ensure   => 'present',
     provider => 'git',
     source   => 'https://code.googlesource.com/re2',
+    revision => 'b4073a9d29cdf7be063b8daaa9c8dca5fde2400d',
   }
 
   exec { 'build_and_install_re2':
@@ -248,10 +250,12 @@ class gitlab::install (
     require => Vcsrepo[$unicorn_root],
   }
 
+  $ruby_maj_min = join(split($ruby_suffix), '')
+
   exec { 'configure_building_nokogiri':
     command     => "bundle${ruby_suffix} config build.nokogiri --use-system-libraries --with-xml2-config=/usr/local/bin/xml2-config --with-xslt-config=/usr/local/bin/xslt-config", # lint:ignore:140chars
     environment => [ "HOME=${gitlab_home}",
-                      'CFLAGS="-I/usr/local/include/libxml2 -I/usr/local/include/ruby-2.3"', ],
+                      "CFLAGS='-I/usr/local/include/libxml2 -I/usr/local/include/ruby-${ruby_maj_min}'", ],
     user        => $gitlab_user,
     refreshonly => true,
     timeout     => 2000,
