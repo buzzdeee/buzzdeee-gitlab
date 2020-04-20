@@ -75,6 +75,7 @@ class gitlab::install (
   $mail_room_enabled = $::gitlab::mail_room_enabled,
   $mail_room_pid_path = $::gitlab::mail_room_pid_path,
   $mail_room_config = $::gitlab::mail_room_config,
+  $mail_room_log = $::gitlab::mail_room_log,
 
   $gitlab_pages_enabled  =$::gitlab::gitlab_pages_enabled,
   $gitlab_pages_log = $::gitlab::gitlab_pages_log,

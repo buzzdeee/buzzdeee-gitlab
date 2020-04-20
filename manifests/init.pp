@@ -124,6 +124,7 @@ class gitlab (
   $mail_room_enabled = $::gitlab::params::mail_room_enabled,
   $mail_room_pid_path = $::gitlab::params::mail_room_pid_path,
   $mail_room_config = $::gitlab::params::mail_room_config,
+  $mail_room_log = $::gitlab::params::mail_room_log,
 
   $gitlab_pages_enabled = $::gitlab::params::gitlab_pages_enabled,
   $gitlab_pages_log = $::gitlab::params::gitlab_pages_log,

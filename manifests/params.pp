@@ -82,6 +82,7 @@ class gitlab::params {
   $mail_room_enabled = false
   $mail_room_pid_path = '/var/run/gitlab/mail_room.pid'
   $mail_room_config  = '/var/www/gitlab/gitlab/config/mail_room.yml'
+  $mail_room_log = '/var/www/gitlab/gitlab/log/gitlab-mail_room.log'
 
   # NOT YET!!!
   $gitlab_pages_enabled = false
