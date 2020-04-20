@@ -3,7 +3,7 @@ class gitlab::params {
   $manage_go_package = false
   $manage_yarn_package = false
 
-  $gitlab_giturl = 'https://gitlab.com/gitlab-org/gitlab-ce.git'
+  $gitlab_giturl = 'https://gitlab.com/gitlab-org/gitlab-foss.git'
 
   $ruby_suffix='23'
 
