@@ -296,6 +296,8 @@ class gitlab::install (
   exec { 'install_gitlab_gems':
     command     => "bundle${ruby_suffix} install --deployment --without development test mysql aws kerberos",
     environment => [ "HOME=${gitlab_home}",
+                      'CC=clang',
+                      'CXX=clang++',
                       'CFLAGS=-I/usr/local/include/libxml2',
                       "PATH=${gitlab_home}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11R6/bin:/usr/local/sbin" ],
     user        => $gitlab_user,
