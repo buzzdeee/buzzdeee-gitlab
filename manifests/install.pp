@@ -303,7 +303,7 @@ class gitlab::install (
     user        => $gitlab_user,
     cwd         => $unicorn_root,
     refreshonly => true,
-    timeout     => 3000,
+    timeout     => 6000,
     subscribe   => Vcsrepo[$unicorn_root],
     require     => File["${gitlab_home}/bin/make"],
   }
