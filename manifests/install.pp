@@ -389,7 +389,7 @@ class gitlab::install (
     before      => Exec['yarn_install'],
   }
   exec { 'yarn_install':
-    command     => "yarn install --production --pure-lockfile",
+    command     => "yarn install --production --pure-lockfile --ignore-engines --prefer-offline",
     environment => [ "HOME=${gitlab_home}",
                       "PATH=${gitlab_home}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11R6/bin:/usr/local/sbin" ],
     user        => $gitlab_user,
