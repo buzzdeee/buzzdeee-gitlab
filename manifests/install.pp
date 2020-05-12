@@ -388,6 +388,12 @@ class gitlab::install (
     subscribe   => [ Exec['install_gitlab_workhorse'], Vcsrepo[$unicorn_root], ],
     before      => Exec['yarn_install'],
   }
+
+  file { '/tmp/node':
+    ensure => 'link',
+    target => '/usr/local/bin/node',
+    before => Exec['yarn_install'],
+  }
   exec { 'yarn_install':
     command     => "yarn install --production --pure-lockfile --ignore-engines --prefer-offline",
     environment => [ "HOME=${gitlab_home}",
