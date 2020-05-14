@@ -360,7 +360,7 @@ class gitlab::install (
     user        => $gitlab_user,
     cwd         => $unicorn_root,
     refreshonly => false,
-    timeout     => 3000,
+    timeout     => 6000,
     creates     => $gitaly_root,
     require     => [ Exec['install_gitlab_workhorse'], Vcsrepo[$unicorn_root], ],
   }
