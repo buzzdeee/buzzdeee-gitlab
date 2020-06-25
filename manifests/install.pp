@@ -121,6 +121,7 @@ class gitlab::install (
 
   exec { 'build_and_install_re2':
     command     => "/usr/local/bin/gmake install",
+    timeout     => 6000,
     cwd         => '/usr/src/re2',
     environment => [ "CC=clang", "CXX=clang++" ],
     require     => Vcsrepo['/usr/src/re2'],
