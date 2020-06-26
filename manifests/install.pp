@@ -308,6 +308,12 @@ class gitlab::install (
     subscribe   => Vcsrepo[$unicorn_root],
     require     => File["${gitlab_home}/bin/make"],
   }
+  exec { 'copy_ffi_types_conf':
+    command => "/bin/cp -r /var/www/gitlab/gitlab/vendor/bundle/ruby/2.6/gems/ffi-1.12.2/lib/ffi/platform/x86_64-openbsd /var/www/gitlab/gitlab/vendor/bundle/ruby/2.6/gems/ffi-1.12.2/lib/ffi/platform/aarch64-openbsd", # lint:ignore:140chars
+    user    => $gitlab_user,
+    require => Exec['install_gitlab_gems'],
+    before  => Exec['install_gitlab_shell'],
+  }
   exec { 'install_gitlab_shell':
     command     => "bundle${ruby_suffix} exec rake${ruby_suffix} gitlab:shell:install REDIS_URL=unix:${redis_socket} RAILS_ENV=production SKIP_STORAGE_VALIDATION=true", # lint:ignore:140chars
     environment => [ "HOME=${gitlab_home}",
